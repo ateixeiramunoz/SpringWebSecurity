@@ -42,7 +42,7 @@ public class SecurityConfig {
                                 .requestMatchers("/webjars/**").permitAll()
                                 .requestMatchers("/*js").permitAll()
                                 .requestMatchers("/*css").permitAll()
-                                .requestMatchers("/resources/**", "/signup", "/about","/error", "/login","","/").permitAll()
+                                .requestMatchers("/resources/**", "/forgot_password" ,"/reset_password","/signup", "/about","/error", "/login","","/").permitAll()
                                 .requestMatchers("","/","/gs-guide-websocket/**").permitAll()
                                 .requestMatchers("/admin/**").hasRole("ADMIN")
                                 .requestMatchers("/users").hasRole("ADMIN")

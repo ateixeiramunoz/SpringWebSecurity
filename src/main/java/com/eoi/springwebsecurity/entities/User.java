@@ -39,4 +39,9 @@ public class User
             inverseJoinColumns={@JoinColumn(name="ROLE_ID", referencedColumnName="ID")})
     private List<Role> roles = new ArrayList<>();
 
+
+    @Column(name = "reset_password_token")
+    private String resetPasswordToken;
+
+
 }
