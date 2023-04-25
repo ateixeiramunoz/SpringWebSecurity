@@ -24,6 +24,12 @@
         <li sec:authorize="isAuthenticated()" class="nav-item">
           <a class="nav-link active" aria-current="page" th:href="@{/chat}">Chat</a>
         </li>
+        <li>
+          <label for="name">Tu nombre de usuario:</label>
+          <span sec:authentication="name"></span>
+          <label for="name">Tus Roles:</label>
+          <span sec:authentication="principal.authorities">[ROLE_USER, ROLE_ADMIN]</span>
+        </li>
       </ul>
     </div>
   </div>
@@ -34,34 +40,28 @@
   Javascript and reload this page!</h2></noscript>
 <div id="main-content" class="container">
   <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-9">
       <form class="form-inline">
         <div class="form-group">
           <label for="connect">WebSocket connection:</label>
           <button id="connect" class="btn btn-default" type="submit">Connect</button>
-          <button id="disconnect" class="btn btn-default" type="submit" disabled="disabled">Disconnect
+          <button id="disconnect" class="btn btn-primary" type="submit" disabled="disabled">Disconnect
           </button>
         </div>
       </form>
     </div>
-    <div class="col-md-6">
+    <div class="col-md-9">
       <form class="form-inline">
         <div class="form-group">
-          <label for="name">What is your name?</label>
-          <span sec:authentication="name">Bob</span>
-          <span sec:authentication="principal.authorities">[ROLE_USER, ROLE_ADMIN]</span>
-          <input type="text" id="name" class="form-control" placeholder="Your name here...">
+          <h2>Envío de mensajes privados</h2>
+          <br>
+          <br>
+          <label th:text="#{chat.nombreDestino}" for="namePrivate"></label>
+          <input type="text" id="namePrivate" class="form-control" placeholder="email del usuario destino">
+          <label th:text="#{chat.mensaje}" for="msgTxt"></label>
+          <input type="text" id="msgTxt" class="form-control" placeholder="Escribe tu mensaje">
         </div>
-        <button id="send" class="btn btn-default" type="submit">Send</button>
-      </form>
-      <form class="form-inline">
-        <div class="form-group">
-          <label for="namePrivate">What is the destination user name?</label>
-          <input type="text" id="namePrivate" class="form-control" placeholder="User name here...">
-          <label for="msgTxt">What is the message?</label>
-          <input type="text" id="msgTxt" class="form-control" placeholder="Private Message Here">
-        </div>
-        <button id="sendPrivate" class="btn btn-default" type="submit">Send Private</button>
+        <button th:text="#{boton.enviar}" id="sendPrivate" class="btn btn-primary" type="submit"></button>
       </form>
     </div>
 

@@ -18,22 +18,13 @@ function connect() {
     stompClient.connect({}, function (frame) {
         setConnected(true);
         console.log('Connected: ' + frame);
-
         stompClient.subscribe('/topic/greetings', function (greeting) {
-
            showGreeting(JSON.parse(greeting.body).content);
-
         });
-
-
         stompClient.subscribe('/user/specific', function (message) {
-
             console.log("RECIBIDO MENSAJE PERSONAL");
             showPrivate(JSON.parse(message.body).text);
-
         });
-
-
     });
 }
 
@@ -49,14 +40,10 @@ function sendName() {
     stompClient.send("/app/hello", {}, JSON.stringify({'name': $("#name").val()}));
 }
 
-
-
 function sendPrivate() {
-
     var text = document.getElementById('msgTxt').value;
     var to = document.getElementById('namePrivate').value;
     stompClient.send("/app/private", {}, JSON.stringify({'text':text, 'to':to}));
-
 }
 
 
