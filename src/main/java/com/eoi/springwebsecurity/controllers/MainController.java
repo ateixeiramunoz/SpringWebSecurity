@@ -16,7 +16,7 @@ public class MainController {
     private UserService userService;
 
 
-    @GetMapping("")
+    @GetMapping(value={"","/"})
     public String showHomePage() {
         return "index";
     }
@@ -37,6 +37,12 @@ public class MainController {
         model.addAttribute("users", users);
         return "users";
     }
+
+    @GetMapping("/chat")
+    public String chat(){
+        return "chat";
+    }
+
 
 
 
