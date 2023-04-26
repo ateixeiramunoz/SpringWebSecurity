@@ -77,7 +77,6 @@ public class UserServiceImpl implements UserService {
         return roleRepository.save(role);
     }
 
-
     public void updateResetPasswordToken(String token, String email) throws UsernameNotFoundException {
         User user = userRepository.findByEmail(email);
         if (user != null) {
@@ -87,6 +86,7 @@ public class UserServiceImpl implements UserService {
             throw new UsernameNotFoundException("Could not find any user with the email " + email);
         }
     }
+
 
     public User getByResetPasswordToken(String token) {
         return userRepository.findByResetPasswordToken(token);
@@ -100,8 +100,6 @@ public class UserServiceImpl implements UserService {
         user.setResetPasswordToken(null);
         userRepository.save(user);
     }
-
-
 
 
 

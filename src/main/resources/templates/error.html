@@ -5,10 +5,6 @@
   <meta charset="utf-8" />
   <link rel="stylesheet" href="css/main.css" th:href="@{/css/main.css}" />
 </head>
-<body th:with="httpStatus=${HttpStatus.status}">
-<p>El código de estado HTTP es: <span th:text="${httpStatus.value()}"></span></p>
-<h1 th:text="|${httpStatus} - ${httpStatus.reasonPhrase}|">404</h1>
-<p th:utext="${errorMessage}">Error java.lang.NullPointerException</p>
-<a href="index.html" th:href="@{/index.html}">Back to Home Page</a>
+<body>
 </body>
 </html>
