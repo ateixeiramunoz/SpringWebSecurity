@@ -12,4 +12,10 @@ public interface UserService {
     User findUserByEmail(String email);
 
     List<UserDto> findAllUsers();
+
+    User getByResetPasswordToken(String token);
+
+    void updateResetPasswordToken(String token, String email);
+
+    void updatePassword(User user, String password);
 }

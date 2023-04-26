@@ -27,7 +27,7 @@ public class RegisterController {
     }
 
     // handler method to handle user registration form request
-    @GetMapping("/register")
+    @GetMapping(value={"/register","/signup"})
     public String showRegistrationForm(Model model){
         // create model object to store form data
         UserDto user = new UserDto();

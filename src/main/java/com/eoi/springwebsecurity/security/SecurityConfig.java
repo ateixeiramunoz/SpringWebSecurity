@@ -11,21 +11,17 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
-
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
 
-
     @Autowired
     public UserDetailsService userDetailsService ;
-
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
 
     @Bean
     public DaoAuthenticationProvider authenticationProvider() {
@@ -36,19 +32,24 @@ public class SecurityConfig {
         return authProvider;
     }
 
-
-
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
         http.csrf().disable()
                 .authorizeHttpRequests(authorize ->
-                        authorize.requestMatchers("/register/**").permitAll()
+                        authorize.requestMatchers("/register/**","/signup/**").permitAll()
                                 .requestMatchers("/index").permitAll()
-                                .requestMatchers("/users").hasRole("ADMIN")
-                                .requestMatchers("/resources/**", "/signup", "/about","/error", "/login","","/").permitAll()
+                                .requestMatchers("/webjars/**").permitAll()
+                                .requestMatchers("/css/**").permitAll()
+                                .requestMatchers("/*js").permitAll()
+                                .requestMatchers("/*css").permitAll()
+                                .requestMatchers("/resources/**", "/forgot_password" ,"/reset_password","/signup", "/about","/error", "/login","","/").permitAll()
+                                .requestMatchers("","/","/gs-guide-websocket/**").permitAll()
                                 .requestMatchers("/admin/**").hasRole("ADMIN")
+                                .requestMatchers("/users").hasRole("ADMIN")
+                                .requestMatchers("/chat").authenticated()
                                 .requestMatchers("/user/**").hasRole("USER")
+
                 ).formLogin(
                         form -> form
                                 .loginPage("/login")
@@ -60,10 +61,6 @@ public class SecurityConfig {
                                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                                 .permitAll()
                 );
-
-
-
-
 
         return http.build();
     }

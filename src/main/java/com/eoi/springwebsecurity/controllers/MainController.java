@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import java.security.Principal;
 import java.util.List;
 
 @Controller
@@ -16,9 +17,9 @@ public class MainController {
     private UserService userService;
 
 
-    @GetMapping("")
-    public String showHomePage() {
-        return "index";
+    @GetMapping("/")
+    String index(Principal principal) {
+        return principal != null ? "home/homeSignedIn" : "home/homeNotSignedIn";
     }
 
     @GetMapping("/admin")
@@ -37,6 +38,12 @@ public class MainController {
         model.addAttribute("users", users);
         return "users";
     }
+
+    @GetMapping("/chat")
+    public String chat(){
+        return "chat";
+    }
+
 
 
 
