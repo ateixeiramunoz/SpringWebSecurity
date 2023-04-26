@@ -40,6 +40,7 @@ public class SecurityConfig {
                         authorize.requestMatchers("/register/**","/signup/**").permitAll()
                                 .requestMatchers("/index").permitAll()
                                 .requestMatchers("/webjars/**").permitAll()
+                                .requestMatchers("/css/**").permitAll()
                                 .requestMatchers("/*js").permitAll()
                                 .requestMatchers("/*css").permitAll()
                                 .requestMatchers("/resources/**", "/forgot_password" ,"/reset_password","/signup", "/about","/error", "/login","","/").permitAll()
