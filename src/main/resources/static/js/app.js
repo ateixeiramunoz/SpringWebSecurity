@@ -22,9 +22,10 @@ function connect() {
         stompClient.subscribe('/topic/greetings', function (greeting) {
            showGreeting(JSON.parse(greeting.body).content);
         });
+
         stompClient.subscribe('/user/specific', function (message) {
             console.log("RECIBIDO MENSAJE PERSONAL");
-            showPrivate(JSON.parse(message.body).text);
+            showPrivate(JSON.parse(message.body).text, JSON.parse(message.body).from );
         });
     });
 }
@@ -45,9 +46,15 @@ function sendName() {
 }
 
 function sendPrivate() {
+
     var text = document.getElementById('msgTxt').value;
     var to = document.getElementById('namePrivate').value;
-    stompClient.send("/app/private", {}, JSON.stringify({'text':text, 'to':to}));
+    var from = document.getElementById('userID').value;
+    stompClient.send("/app/private", {}, JSON.stringify({'text':text, 'to':to, 'from':from}));
+
+    $("#greetings").append("<tr><td>YO: " + text + "</td></tr>");
+
+
 }
 
 
@@ -59,8 +66,11 @@ function showGreeting(message) {
 }
 
 
-function showPrivate(message) {
-    $("#greetings").append("<tr><td>" + message + "</td></tr>");
+function showPrivate(message, from) {
+
+    $("#greetings").append("<tr><td>" + from + " : " + message + "</td></tr>");
+
+
 }
 
 

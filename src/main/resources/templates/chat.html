@@ -53,9 +53,10 @@
               <input type="text" id="namePrivate" class="form-control" placeholder="email del usuario destino">
               <label th:text="#{chat.mensaje}" for="msgTxt"></label>
               <input type="text" id="msgTxt" class="form-control" placeholder="Escribe tu mensaje">
+
+              <input name="userID" type="hidden" th:value="${userID}" id="userID" class="form-control" placeholder="Escribe tu mensaje">
             </div>
           </div>
-
         </div>
         <button th:text="#{boton.enviar}" id="sendPrivate" class="btn btn-primary" type="submit"></button>
       </form>

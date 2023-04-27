@@ -1,5 +1,4 @@
 <!-- Archivo HTML que muestra la interfaz de usuario para cargar archivos -->
-
 <html xmlns:th="https://www.thymeleaf.org">
 <head th:replace="fragments/head :: head">
   <!-- Se incluye la cabecera de la página mediante la inclusión del fragmento "head" -->
@@ -12,6 +11,7 @@
 <div class="container">
   <div class="row">
     <div class="col-md-12">
+
       <!-- Tarjeta para subir archivos al FileSystem -->
       <div class="card mt-3">
         <div class="card-body">
@@ -106,7 +106,7 @@
                     <a th:href="@{/databasefiles/delete/${file.fileName}(file=${file.fileName})}" class="btn btn-danger mx-2" onclick="return confirm('¿Estás seguro de que quieres eliminar este archivo de la base de datos?')" role="button">
                       <i class="bi bi-trash"></i> Eliminar
                     </a>
-                    <a th:href="@{${file.url}}" class="btn btn-success" role="button">
+                    <a th:href="@{/databasefiles/${file.fileName}}" class="btn btn-success" role="button">
                       <i class="bi bi-cloud-download"></i> Descargar
                     </a>
                   </div>
