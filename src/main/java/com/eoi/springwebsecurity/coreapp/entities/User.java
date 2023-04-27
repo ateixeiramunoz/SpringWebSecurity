@@ -9,6 +9,9 @@ import lombok.Setter;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The type User.
+ */
 @Getter
 @Setter
 @NoArgsConstructor
@@ -43,13 +46,29 @@ public class User
     @Column(name = "reset_password_token")
     private String resetPasswordToken;
 
+    /**
+     * Gets full name.
+     *
+     * @return the full name
+     */
     public String getFullName() {
         return name;
     }
+
+    /**
+     * Gets name.
+     *
+     * @return the name
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Sets name.
+     *
+     * @param name the name
+     */
     public void setName(String name) {
         this.name = name;
     }

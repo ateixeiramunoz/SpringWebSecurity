@@ -28,6 +28,9 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 public class SecurityConfig {
 
 
+    /**
+     * The User details service.
+     */
     @Autowired
     public UserDetailsService userDetailsService ;
 

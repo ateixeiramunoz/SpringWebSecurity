@@ -7,24 +7,36 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+/**
+ * The type Spring web security application.
+ */
 @SpringBootApplication
 @EnableAutoConfiguration
 public class SpringWebSecurityApplication implements CommandLineRunner {
 
-	@Autowired
-	FileSystemStorageService fileSystemStorageService;
-	public static void main(String[] args) {
-		SpringApplication.run(SpringWebSecurityApplication.class, args);
-	}
+    /**
+     * The File system storage service.
+     */
+    @Autowired
+    FileSystemStorageService fileSystemStorageService;
 
-	/**
-	 * Callback used to run the bean.
-	 *
-	 * @param args incoming main method arguments
-	 * @throws Exception on error
-	 */
-	@Override
-	public void run(String... args) throws Exception {
-		fileSystemStorageService.init();
-	}
+    /**
+     * The entry point of application.
+     *
+     * @param args the input arguments
+     */
+    public static void main(String[] args) {
+        SpringApplication.run(SpringWebSecurityApplication.class, args);
+    }
+
+    /**
+     * Callback used to run the bean.
+     *
+     * @param args incoming main method arguments
+     * @throws Exception on error
+     */
+    @Override
+    public void run(String... args) throws Exception {
+        fileSystemStorageService.init();
+    }
 }

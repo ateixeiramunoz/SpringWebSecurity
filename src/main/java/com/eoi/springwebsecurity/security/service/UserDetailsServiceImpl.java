@@ -21,15 +21,14 @@ import java.util.List;
  * la autenticación de usuarios en la aplicación. Utiliza el UserRepository para
  * buscar y cargar la información del usuario en la base de datos.
  * <br>
- *  Es una implementación de la interfaz UserDetailsService de Spring Security.
- *  Su propósito es proporcionar una forma de cargar y devolver los detalles del usuario en un objeto UserDetails,
- *  que es necesario para la autenticación y autorización en Spring Security.
- *  <br>
- *  En resumen, esta clase se utiliza para cargar los detalles de usuario
- *  (como el nombre de usuario, la contraseña y los roles)
- *  desde el repositorio de usuarios de la aplicación y devolverlos en un objeto
- *  UserDetails para ser utilizado por Spring Security en la autenticación y autorización de los usuarios.
- *
+ * Es una implementación de la interfaz UserDetailsService de Spring Security.
+ * Su propósito es proporcionar una forma de cargar y devolver los detalles del usuario en un objeto UserDetails,
+ * que es necesario para la autenticación y autorización en Spring Security.
+ * <br>
+ * En resumen, esta clase se utiliza para cargar los detalles de usuario
+ * (como el nombre de usuario, la contraseña y los roles)
+ * desde el repositorio de usuarios de la aplicación y devolverlos en un objeto
+ * UserDetails para ser utilizado por Spring Security en la autenticación y autorización de los usuarios.
  */
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {

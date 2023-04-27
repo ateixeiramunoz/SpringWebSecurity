@@ -14,6 +14,9 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * The type User service.
+ */
 @Service
 public class UserServiceImpl implements UserService {
 
@@ -24,6 +27,13 @@ public class UserServiceImpl implements UserService {
     @Value("${default.user.role}") // (from application.properties
     private String defaultUserRole;
 
+    /**
+     * Instantiates a new User service.
+     *
+     * @param userRepository  the user repository
+     * @param roleRepository  the role repository
+     * @param passwordEncoder the password encoder
+     */
     public UserServiceImpl(UserRepository userRepository,
                            RoleRepository roleRepository,
                            PasswordEncoder passwordEncoder) {
