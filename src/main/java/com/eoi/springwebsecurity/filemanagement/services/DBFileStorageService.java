@@ -1,5 +1,7 @@
 package com.eoi.springwebsecurity.filemanagement.services;
 
+import com.eoi.springwebsecurity.coreapp.entities.User;
+import com.eoi.springwebsecurity.coreapp.repositories.UserRepository;
 import com.eoi.springwebsecurity.filemanagement.entities.FileDB;
 import com.eoi.springwebsecurity.filemanagement.models.FileInfo;
 import com.eoi.springwebsecurity.filemanagement.repositories.FileDBRepository;
@@ -23,6 +25,8 @@ public class DBFileStorageService {
 
     @Autowired
     private FileDBRepository fileDBRepository;
+    @Autowired
+    private UserRepository userRepository;
 
     /**
      * Store file db.
@@ -33,7 +37,7 @@ public class DBFileStorageService {
     public FileDB store(MultipartFile file)  {
 
         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
-        FileDB fileDB = null;
+        FileDB fileDB;
         try {
             fileDB = new FileDB(null,fileName, file.getContentType(), file.getBytes());
         } catch (IOException e) {
@@ -44,6 +48,34 @@ public class DBFileStorageService {
 
         return fileDB;
     }
+
+    /**
+     * Método que guarda un fichero de un usuario en base de datos
+     *
+     * @param file the file
+     * @return the file db
+     */
+    public FileDB storeUserFile(MultipartFile file, User user)  {
+
+        String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+        FileDB fileDB;
+        try {
+
+            fileDB = new FileDB(null,fileName, file.getContentType(), file.getBytes());
+
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        fileDB = fileDBRepository.save(fileDB);
+        user.getFilesDB().add(fileDB);
+        userRepository.save(user);
+
+        return fileDB;
+    }
+
+
 
     /**
      * Gets file.
@@ -81,6 +113,21 @@ public class DBFileStorageService {
         }).collect(Collectors.toList());
     }
 
+    public List<FileInfo> getUserFileInfos(User user) {
+
+        return user.getFilesDB().stream().map(file -> {
+            FileInfo fileInfo = new FileInfo();
+            fileInfo.setFileName(file.getFileName());
+            fileInfo.setId(file.getId());
+            fileInfo.setUrl("/files/" + file.getId());
+            fileInfo.setType(file.getType());
+            fileInfo.setSize(file.getData().length);
+            return fileInfo;
+        }).collect(Collectors.toList());
+
+    }
+
+
 
     /**
      * Delete file.
@@ -88,9 +135,41 @@ public class DBFileStorageService {
      * @param id the id
      */
     public void deleteFile(String id) {
+        Optional<FileDB> file = fileDBRepository.findById(id);
+        if(file.isPresent()) {
+            FileDB fileOk =file.get();
+            fileOk.getUsers().clear();
+            fileOk = fileDBRepository.save(fileOk);
+            fileDBRepository.delete(fileOk);
+        }
+
+
+
+
+    }
+
+
+
+    /**
+     * Método que guarda un fichero de un usuario en base de datos
+     *
+     * @param file the file
+     *
+     */
+    public void desasociarUserFile(String id, User user)  {
 
         Optional<FileDB> file = fileDBRepository.findById(id);
-        file.ifPresent(fileDB -> fileDBRepository.delete(fileDB));
+        if(file.isPresent())
+        {
+            user.getFilesDB().remove(file.get());
+            userRepository.save(user);
+        }
+        else
+        {
+            throw new RuntimeException("El fichero no existe");
+        }
+
+
 
     }
 

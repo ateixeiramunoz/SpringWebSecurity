@@ -53,6 +53,20 @@
       </div>
     </div>
 
+    <!-- Tarjeta para subir archivos a la Base de Datos -->
+    <div class="card mt-3">
+      <div class="card-body">
+        <span class="card-title h5">Subir archivo personal a la base de datos</span>
+        <form method="POST" enctype="multipart/form-data" th:action="@{/uploadUserFileToDatabase}">
+          <div class="input-group mb-3">
+            <input name="file" type="file" class="form-control" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1">
+          </div>
+          <button type="submit" class="btn btn-primary">Subir</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
 
     <!-- Sección para mostrar la lista de archivos en la Base de Datos -->
     <div class="container">
@@ -107,7 +121,7 @@
                     <a th:href="@{/databasefiles/delete/{file}(file=${file.id})}" class="btn btn-danger mx-2" onclick="return confirm('¿Estás seguro de que quieres eliminar este archivo de la base de datos?')" role="button">
                       <i class="bi bi-trash"></i> Eliminar
                     </a>
-                    <a th:href="@{/databasefiles/${file.fileName}}" class="btn btn-success" role="button">
+                    <a th:href="@{/databasefiles/{file}(file=${file.fileName})}" class="btn btn-success" role="button">
                       <i class="bi bi-cloud-download"></i> Descargar
                     </a>
                   </div>
@@ -126,6 +140,51 @@
       </div>
     </div>
     <!-- Sección para mostrar los archivos personales del usuario -->
+
+
+  <!-- Sección para mostrar la lista de archivos personales en la Base de Datos -->
+  <div class="container">
+    <div class="card mt-6">
+      <div class="card-header">
+        <h5 class="card-title">Archivos Personales en la base de datos</h5>
+      </div>
+      <div class="card-body">
+        <div th:if="${not #lists.isEmpty(dbUserFiles)}">
+          <ul class="list-group">
+            <li th:each="file : ${dbUserFiles}" class="list-group-item">
+              <div class="d-flex justify-content-between align-items-center">
+                <span th:text="${file.fileName}"></span>
+                <span th:text="${file.size}"></span>
+                <div>
+                  <a th:href="@{/databasefiles/desasociarUserFile/{file}(file=${file.id})}" class="btn btn-danger mx-2" onclick="return confirm('¿Estás seguro de que quieres eliminar este archivo de la base de datos?')" role="button">
+                    <i class="bi bi-trash"></i> Desasociar
+                  </a>
+                  <a th:href="@{/databasefiles/delete/{file}(file=${file.id})}" class="btn btn-danger mx-2" onclick="return confirm('¿Estás seguro de que quieres eliminar este archivo de la base de datos?')" role="button">
+                    <i class="bi bi-trash"></i> Eliminar
+                  </a>
+                  <a th:href="@{/databasefiles/{file}(file=${file.fileName})}" class="btn btn-success" role="button">
+                    <i class="bi bi-cloud-download"></i> Descargar
+                  </a>
+                </div>
+              </div>
+              <div class="card-text">
+                <small class="text-muted" th:text="'Tipo: ' + ${file.type}"></small>
+              </div>
+            </li>
+          </ul>
+
+        </div>
+        <div th:if="${#lists.isEmpty(dbUserFiles)}" class="alert alert-info" role="alert">
+          No hay archivos disponibles
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+
     <!-- Sección para mostrar la lista de archivos en la Base de Datos -->
     <div class="container">
       <div class="card mt-6">

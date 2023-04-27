@@ -8,6 +8,7 @@ import com.eoi.springwebsecurity.filemanagement.services.FileSystemStorageServic
 import com.eoi.springwebsecurity.security.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -70,7 +71,7 @@ public class FileController {
      * @throws IOException si ocurre un error al cargar los archivos
      */
     @GetMapping("/files")
-    public String listAllUploadedFiles(Model model) throws IOException {
+    public String listAllUploadedFiles(Model model,Authentication authentication) throws IOException {
 
         // Obtenemos todos los archivos almacenados en el servicio de almacenamiento predeterminado.
         // Para cada archivo, generamos una URL que permita descargar el archivo desde el servidor.
@@ -80,11 +81,23 @@ public class FileController {
         // Para cada archivo, generamos una URL que permita descargar el archivo desde el servidor.
         List<FileInfo> dbFiles = dbFileStorageService.getAllFileInfos();
 
+        //Obtenemos el nombre de usuario del objeto de autenticacion
+        String username = authentication.getName();
+        // Buscamos al usuario correspondiente al nombre de usuario obtenido anteriormente.
+        User user = userService.findUserByEmail(username);
+
+        // Obtenemos todos los archivos asociados al usuario y almacenados en la base de datos
+        // Para cada archivo, generamos una URL que permita descargar el archivo desde el servidor.
+        List<FileInfo> dbUserFiles = dbFileStorageService.getUserFileInfos(user);
+
         // Agregamos las URLs de los archivos del servicio de almacenamiento predeterminado al modelo.
         model.addAttribute("files", files);
 
         // Agregamos los objetos FileInfo del servicio de almacenamiento de la base de datos al modelo.
         model.addAttribute("DBfiles", dbFiles);
+
+        model.addAttribute("dbUserFiles", dbUserFiles);
+
 
         // Devolvemos el nombre de la vista a la que se va a redirigir.
         return "listFicheros";
@@ -170,6 +183,47 @@ public class FileController {
 
 
     /**
+     * Método que recibe una solicitud POST para cargar un archivo propio de un usuario a la base de datos.
+     *
+     * @param file               el archivo cargado en el formulario
+     * @param redirectAttributes objeto utilizado para agregar atributos a la redirección
+     * @param authentication     objeto que representa la información de autenticación del usuario que realiza la solicitud
+     * @return una cadena de texto con la vista redirigida
+     */
+    @PostMapping("/uploadUserFileToDatabase")
+    public String uploadUserFileToDatabase(@RequestParam("file") MultipartFile file,
+                             RedirectAttributes redirectAttributes,
+                             Authentication authentication) {
+
+        String message = "";
+        try {
+            //Obtenemos el nombre de usuario del objeto de autenticacion
+            String username = authentication.getName();
+            // Buscamos al usuario correspondiente al nombre de usuario obtenido anteriormente.
+            User user = userService.findUserByEmail(username);
+
+            // Almacenamos el archivo del usuario en la base de datos
+            dbFileStorageService.storeUserFile(file,user);
+
+            // Agregar mensaje a los atributos de la redirección
+            redirectAttributes.addFlashAttribute("message",
+                    "¡Archivo " + file.getOriginalFilename() + " cargado exitosamente a la base de datos!");
+
+            // Redirigir a la lista de archivos
+            return "redirect:/files";
+
+        } catch (Exception e) {
+            // Agregar mensaje de error a los atributos de la redirección
+            redirectAttributes.addFlashAttribute("errorMsg", e.getLocalizedMessage());
+
+            // Redirigir a la página de error
+            return "error";
+        }
+    }
+
+
+
+    /**
      * Método que se encarga de manejar la subida de un archivo de usuario al servidor.
      *
      * @param file               el archivo que se va a subir
@@ -239,6 +293,22 @@ public class FileController {
         fileSystemStorageService.deleteFile(fileName);
         return "redirect:/files";
     }
+
+    @GetMapping("/databasefiles/desasociarUserFile/{id}")
+    public String deleteFileFromFileSystem(@PathVariable String id, Authentication authentication) {
+        // Obtenemos el nombre de usuario del usuario autenticado.
+        String username = authentication.getName();
+        // Buscamos al usuario correspondiente al nombre de usuario obtenido anteriormente.
+        User user = userService.findUserByEmail(username);
+
+        dbFileStorageService.desasociarUserFile(id, user);
+        return "redirect:/files";
+    }
+
+
+
+
+
 
 
     /**

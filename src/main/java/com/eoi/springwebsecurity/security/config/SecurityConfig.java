@@ -98,7 +98,9 @@ public class SecurityConfig {
 
                         // Peticiones permitidas sólo para usuarios autenticados
                         .requestMatchers("/chat","/videos","/files/**","/upload","/userFiles/**","/databasefiles/**").authenticated()
-                        .requestMatchers("/uploadUserFileToFileSystem","/uploadToFileSystem","/uploadToDatabase").authenticated()
+                        .requestMatchers("/uploadUserFileToDatabase","/uploadUserFileToFileSystem","/uploadToFileSystem","/uploadToDatabase").authenticated()
+
+
 
                         //Aceptar a todos los usuarios para stream de videos
                         .requestMatchers("/stream/**").authenticated()
