@@ -73,6 +73,7 @@ public class DBFileStorageService {
         return fileDBRepository.findAll().stream().map(file -> {
             FileInfo fileInfo = new FileInfo();
             fileInfo.setFileName(file.getFileName());
+            fileInfo.setId(file.getId());
             fileInfo.setUrl("/files/" + file.getId());
             fileInfo.setType(file.getType());
             fileInfo.setSize(file.getData().length);

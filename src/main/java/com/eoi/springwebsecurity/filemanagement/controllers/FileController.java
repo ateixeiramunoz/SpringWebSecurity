@@ -33,10 +33,10 @@ import java.util.List;
 public class FileController {
 
     /**
-     * Servicio de almacenamiento de archivos utilizado por el controlador.
+     * Servicio de almacenamiento de archivos en FileSystem local utilizado por el controlador.
      */
     @Autowired
-    private FileSystemStorageService storageService;
+    private FileSystemStorageService fileSystemStorageService;
 
     /**
      * Servicio de almacenamiento de archivos en la base de datos utilizado por el controlador.
@@ -54,11 +54,11 @@ public class FileController {
      * Constructor de la clase que recibe el servicio de almacenamiento de archivos como parámetro.
      * La anotación @Autowired se utiliza para inyectar automáticamente el servicio necesario al crear una instancia de la clase.
      *
-     * @param storageService el servicio de almacenamiento de archivos a utilizar
+     * @param fileSystemStorageService el servicio de almacenamiento de archivos a utilizar
      */
     @Autowired
-    public FileController(FileSystemStorageService storageService) {
-        this.storageService = storageService;
+    public FileController(FileSystemStorageService fileSystemStorageService) {
+        this.fileSystemStorageService = fileSystemStorageService;
     }
 
 
@@ -74,7 +74,7 @@ public class FileController {
 
         // Obtenemos todos los archivos almacenados en el servicio de almacenamiento predeterminado.
         // Para cada archivo, generamos una URL que permita descargar el archivo desde el servidor.
-        List<FileInfo> files = storageService.loadAll();
+        List<FileInfo> files = fileSystemStorageService.loadAll();
 
         // Obtenemos todos los archivos almacenados en el servicio de almacenamiento de la base de datos.
         // Para cada archivo, generamos una URL que permita descargar el archivo desde el servidor.
@@ -87,7 +87,7 @@ public class FileController {
         model.addAttribute("DBfiles", dbFiles);
 
         // Devolvemos el nombre de la vista a la que se va a redirigir.
-        return "uploadForm";
+        return "listFicheros";
     }
 
 
@@ -102,7 +102,7 @@ public class FileController {
     public ResponseEntity<Resource> serveFile(@PathVariable String filename) {
 
         // Cargamos el archivo como un recurso a través del servicio de almacenamiento predeterminado.
-        Resource file = storageService.loadAsResource(filename);
+        Resource file = fileSystemStorageService.loadAsResource(filename);
 
         // Construimos una respuesta HTTP con el archivo a descargar en el cuerpo de la respuesta.
         // También establecemos el encabezado "Content-Disposition" con el nombre de archivo para indicar que se debe descargar.
@@ -123,7 +123,7 @@ public class FileController {
                                    RedirectAttributes redirectAttributes) {
 
         // Guardamos el archivo en el servicio de almacenamiento predeterminado.
-        storageService.save(file);
+        fileSystemStorageService.save(file);
 
         // Agregamos un mensaje de éxito a los atributos de redirección.
         redirectAttributes.addFlashAttribute("message",
@@ -192,7 +192,7 @@ public class FileController {
         Long userId = user.getId();
 
         // Guardamos el archivo en el servicio de almacenamiento de archivos de usuario.
-        storageService.saveUserFile(file, userId);
+        fileSystemStorageService.saveUserFile(file, userId);
 
         // Agregamos un mensaje de éxito a los atributos de redirección.
         redirectAttributes.addFlashAttribute("message",
@@ -227,9 +227,16 @@ public class FileController {
      * @param id El identificador del archivo a eliminar.
      * @return La página de archivos después de eliminar el archivo.
      */
-    @DeleteMapping("/databasefiles/delete/{id}")
+    @GetMapping("/databasefiles/delete/{id}")
     public String deleteFileDB(@PathVariable String id) {
         dbFileStorageService.deleteFile(id);
+        return "redirect:/files";
+    }
+
+
+    @GetMapping("/files/delete/{fileName}")
+    public String deleteFileFromFileSystem(@PathVariable String fileName) {
+        fileSystemStorageService.deleteFile(fileName);
         return "redirect:/files";
     }
 

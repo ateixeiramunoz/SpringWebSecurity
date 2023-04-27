@@ -154,8 +154,6 @@ public class FileSystemStorageServiceImpl implements FileSystemStorageService {
     }
 
 
-
-
     @Override
     public Resource loadAsResource(String filename) {
         Resource resource = load(filename);
@@ -165,6 +163,24 @@ public class FileSystemStorageServiceImpl implements FileSystemStorageService {
             return null;
         }
     }
+
+
+    @Override
+    public void deleteFile(String filename) {
+            try {
+                Path file = root.resolve(filename);
+                Files.delete(file);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+    }
+
+
+
+
+
+
+
 
 
 
