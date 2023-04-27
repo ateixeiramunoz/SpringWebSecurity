@@ -9,6 +9,8 @@ public class PrivateMessage {
 
     private String to;
 
+    private String from;
+
     /**
      * Gets text.
      *
@@ -36,4 +38,16 @@ public class PrivateMessage {
         this.to = to;
     }
 
+
+    public void setText(String text) {
+        this.text = text;
+    }
+
+    public String getFrom() {
+        return from;
+    }
+
+    public void setFrom(String from) {
+        this.from = from;
+    }
 }

@@ -35,9 +35,6 @@
                 <i class="bi bi-eye"></i> Visualizar
               </a>
             </div>
-            <video id="videoPlayer" width="100%" height="auto" controls preload="none" autoplay>
-              <source th:src="${video.getUrl()}" th:type="${video.getType()}">
-            </video>
             <video id="videoPlayer2" width="100%" height="auto" controls preload="none" autoplay>
               <source th:src="${'/stream/' + video.getFileName() + '?bytes=0-50'}" th:type="${video.getType()}">
             </video>

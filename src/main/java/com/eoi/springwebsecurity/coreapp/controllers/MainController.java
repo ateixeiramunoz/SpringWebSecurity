@@ -70,7 +70,11 @@ public class MainController {
      * @return the string
      */
     @GetMapping("/chat")
-    public String chat(){
+    public String chat(Principal principal, Model model){
+
+        String userID = principal.getName();
+        model.addAttribute("userID", userID);
+
         return "chat";
     }
 

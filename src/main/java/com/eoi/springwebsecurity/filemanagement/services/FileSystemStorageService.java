@@ -66,6 +66,8 @@ public interface FileSystemStorageService {
     Resource loadAsResource(String filename);
 
 
+    void deleteFile(String filename);
+
     /**
      * Load all by file type list.
      *

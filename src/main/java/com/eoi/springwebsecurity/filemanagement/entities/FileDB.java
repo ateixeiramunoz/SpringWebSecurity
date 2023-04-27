@@ -1,5 +1,6 @@
 package com.eoi.springwebsecurity.filemanagement.entities;
 
+import com.eoi.springwebsecurity.coreapp.entities.User;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
@@ -7,6 +8,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
+
+import java.util.List;
 
 
 /**
@@ -48,4 +51,13 @@ public class FileDB {
     @Column(name="data", nullable=false, columnDefinition="LONGBLOB")
     private byte[] data;
 
+    @ManyToMany(mappedBy="filesDB")
+    private List<User> users;
+
+    public FileDB(String id, String fileName, String type, @NotEmpty byte[] data) {
+        this.id = id;
+        this.fileName = fileName;
+        this.type = type;
+        this.data = data;
+    }
 }
