@@ -26,6 +26,12 @@ public interface FileSystemStorageService {
      */
     void save(MultipartFile file);
 
+    /**
+     * Save user file.
+     *
+     * @param file   the file
+     * @param userID the user id
+     */
     void saveUserFile(MultipartFile file, Long userID);
 
     /**
@@ -51,11 +57,21 @@ public interface FileSystemStorageService {
     List<FileInfo> loadAll();
 
 
-
-
+    /**
+     * Load as resource resource.
+     *
+     * @param filename the filename
+     * @return the resource
+     */
     Resource loadAsResource(String filename);
 
 
+    /**
+     * Load all by file type list.
+     *
+     * @param fileType the file type
+     * @return the list
+     */
     List<FileInfo> loadAllByFileType(String fileType);
 }
 

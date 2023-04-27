@@ -5,6 +5,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 
+/**
+ * The type Custom user details.
+ */
 public class CustomUserDetails implements UserDetails {
 
     private String username;
@@ -12,6 +15,14 @@ public class CustomUserDetails implements UserDetails {
     private String name;
     private Collection<? extends GrantedAuthority> authorities;
 
+    /**
+     * Instantiates a new Custom user details.
+     *
+     * @param username    the username
+     * @param password    the password
+     * @param name        the name
+     * @param authorities the authorities
+     */
     public CustomUserDetails(String username, String password, String name, Collection<? extends GrantedAuthority> authorities) {
         this.username = username;
         this.password = password;

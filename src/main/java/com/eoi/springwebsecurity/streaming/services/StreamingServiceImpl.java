@@ -7,6 +7,9 @@ import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
+/**
+ * The type Streaming service.
+ */
 @Service
 public class StreamingServiceImpl implements StreamingService{
 

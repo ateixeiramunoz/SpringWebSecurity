@@ -15,12 +15,21 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+/**
+ * The type Db file storage service.
+ */
 @Service
 public class DBFileStorageService {
 
     @Autowired
     private FileDBRepository fileDBRepository;
 
+    /**
+     * Store file db.
+     *
+     * @param file the file
+     * @return the file db
+     */
     public FileDB store(MultipartFile file)  {
 
         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
@@ -36,14 +45,30 @@ public class DBFileStorageService {
         return fileDB;
     }
 
+    /**
+     * Gets file.
+     *
+     * @param id the id
+     * @return the file
+     */
     public FileDB getFile(String id) {
         return fileDBRepository.findById(id).get();
     }
 
+    /**
+     * Gets all files.
+     *
+     * @return the all files
+     */
     public Stream<FileDB> getAllFiles() {
         return fileDBRepository.findAll().stream();
     }
 
+    /**
+     * Gets all file infos.
+     *
+     * @return the all file infos
+     */
     public List<FileInfo> getAllFileInfos() {
         return fileDBRepository.findAll().stream().map(file -> {
             FileInfo fileInfo = new FileInfo();
@@ -56,7 +81,11 @@ public class DBFileStorageService {
     }
 
 
-
+    /**
+     * Delete file.
+     *
+     * @param id the id
+     */
     public void deleteFile(String id) {
 
         Optional<FileDB> file = fileDBRepository.findById(id);

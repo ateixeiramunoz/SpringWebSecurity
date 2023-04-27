@@ -16,6 +16,9 @@ import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBui
 import java.io.IOException;
 import java.util.stream.Collectors;
 
+/**
+ * The type Database file upload controller.
+ */
 @Controller
 @RequestMapping("/database")
 @CrossOrigin("http://localhost:8081")
@@ -25,6 +28,12 @@ public class DatabaseFileUploadController {
     @Autowired
     private DBFileStorageService storageService;
 
+    /**
+     * Upload file response entity.
+     *
+     * @param file the file
+     * @return the response entity
+     */
     @PostMapping("/files")
     public ResponseEntity<ResponseMessage> uploadFile(@RequestParam("file") MultipartFile file) {
         String message = "";
@@ -39,6 +48,13 @@ public class DatabaseFileUploadController {
         }
     }
 
+    /**
+     * List uploaded files string.
+     *
+     * @param model the model
+     * @return the string
+     * @throws IOException the io exception
+     */
     @GetMapping("/files")
     public String listUploadedFiles(Model model) throws IOException {
 
@@ -50,9 +66,12 @@ public class DatabaseFileUploadController {
     }
 
 
-
-
-
+    /**
+     * Gets file.
+     *
+     * @param id the id
+     * @return the file
+     */
     @GetMapping("/files/{id}")
     public ResponseEntity<byte[]> getFile(@PathVariable String id) {
         FileDB fileDB = storageService.getFile(id);

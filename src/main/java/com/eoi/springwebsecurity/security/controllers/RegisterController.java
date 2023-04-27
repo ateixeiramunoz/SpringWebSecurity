@@ -12,6 +12,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
+/**
+ * The type Register controller.
+ */
 @Controller
 public class RegisterController {
 
@@ -20,13 +23,24 @@ public class RegisterController {
     private UserService userService;
 
 
-    // handler method to handle home page request
+    /**
+     * Home string.
+     *
+     * @return the string
+     */
+// handler method to handle home page request
     @GetMapping("/index")
     public String home(){
         return "index";
     }
 
-    // handler method to handle user registration form request
+    /**
+     * Show registration form string.
+     *
+     * @param model the model
+     * @return the string
+     */
+// handler method to handle user registration form request
     @GetMapping(value={"/register","/signup"})
     public String showRegistrationForm(Model model){
         // create model object to store form data
@@ -35,7 +49,15 @@ public class RegisterController {
         return "register";
     }
 
-    // handler method to handle user registration form submit request
+    /**
+     * Registration string.
+     *
+     * @param userDto the user dto
+     * @param result  the result
+     * @param model   the model
+     * @return the string
+     */
+// handler method to handle user registration form submit request
     @PostMapping("/register/save")
     public String registration(@Valid @ModelAttribute("user") UserDto userDto,
                                BindingResult result,

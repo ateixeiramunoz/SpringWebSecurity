@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
 
+/**
+ * The type Streaming controller.
+ */
 @RestController
 @Log4j2
 public class StreamingController {
@@ -19,6 +22,13 @@ public class StreamingController {
     private StreamingService streamingService;
 
 
+    /**
+     * Gets video.
+     *
+     * @param title the title
+     * @param range the range
+     * @return the video
+     */
     @GetMapping(value = "/stream/{title}", produces = "video/mp4")
     public Mono<Resource> getVideo(@PathVariable String title, @RequestHeader(name = "Range", defaultValue = "bytes=0-50") String range) {
         log.info(range);

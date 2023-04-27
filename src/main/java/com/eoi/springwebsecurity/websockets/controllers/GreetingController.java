@@ -13,14 +13,27 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.util.HtmlUtils;
 
 
+/**
+ * The type Greeting controller.
+ */
 @Controller
 @Log4j2
 public class GreetingController {
 
+    /**
+     * The Simp messaging template.
+     */
     @Autowired
     SimpMessagingTemplate simpMessagingTemplate;
 
 
+    /**
+     * Greeting greeting.
+     *
+     * @param message the message
+     * @return the greeting
+     * @throws Exception the exception
+     */
     @MessageMapping("/hello")
     @SendTo("/topic/greetings")
     public Greeting greeting(HelloMessage message) throws Exception {
@@ -30,6 +43,11 @@ public class GreetingController {
 
     }
 
+    /**
+     * Send to specific user.
+     *
+     * @param message the message
+     */
     @MessageMapping("/private")
     public void sendToSpecificUser(@Payload PrivateMessage message) {
 
