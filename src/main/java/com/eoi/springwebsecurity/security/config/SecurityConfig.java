@@ -94,11 +94,15 @@ public class SecurityConfig {
                         .requestMatchers("/users").hasRole("ADMIN")
 
                         // Peticiones permitidas sólo para usuarios autenticados
-                        .requestMatchers("/chat","/files/**","/upload","/userFiles/**","/database/**").authenticated()
+                        .requestMatchers("/chat","/videos","/files/**","/upload","/userFiles/**","/database/**").authenticated()
                         .requestMatchers("/uploadUserFileToFileSystem","/uploadToFileSystem","/uploadToDatabase").authenticated()
+
+                        //Aceptar a todos los ususarios para stream de videos
+                        .requestMatchers("/stream/**").authenticated()
 
                         // Peticiones permitidas sólo para usuarios autenticados con rol USER
                         .requestMatchers("/user/**").hasRole("USER")
+
 
 
                 ).formLogin(

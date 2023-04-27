@@ -56,6 +56,7 @@ public interface FileSystemStorageService {
     Resource loadAsResource(String filename);
 
 
+    List<FileInfo> loadAllByFileType(String fileType);
 }
 
 

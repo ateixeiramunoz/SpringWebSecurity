@@ -7,9 +7,10 @@
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
       <div class="navbar-nav">
         <a sec:authorize="isAuthenticated()" class="nav-link" th:href="@{/register}">Register</a>
-        <a sec:authorize="isAuthenticated()" class="nav-link" aria-current="page" th:href="@{/users}">Users</a>
-        <a sec:authorize="isAuthenticated()" class="nav-link" aria-current="page" th:href="@{/chat}">Chat</a>
-        <a sec:authorize="isAuthenticated()" class="nav-link" aria-current="page" th:href="@{/files}">Ficheros</a>
+        <a sec:authorize="isAuthenticated()" class="nav-link" aria-current="page" th:href="@{/users}">Lista de Usuarios</a>
+        <a sec:authorize="isAuthenticated()" class="nav-link" aria-current="page" th:href="@{/chat}">Chat y Notificaciones</a>
+        <a sec:authorize="isAuthenticated()" class="nav-link" aria-current="page" th:href="@{/files}">Gestión de Ficheros</a>
+        <a sec:authorize="isAuthenticated()" class="nav-link" aria-current="page" th:href="@{/videos}">Videos</a>
         <a sec:authorize="!isAuthenticated()" class="nav-link" aria-current="page" th:href="@{/login}">Log In</a>
         <a sec:authorize="isAuthenticated()" class="nav-link" aria-current="page" th:href="@{/logout}">Log Out</a>
       </div>

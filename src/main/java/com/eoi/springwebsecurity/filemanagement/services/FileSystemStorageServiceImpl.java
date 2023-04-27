@@ -7,6 +7,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import com.eoi.springwebsecurity.filemanagement.controllers.FileController;
@@ -152,6 +153,9 @@ public class FileSystemStorageServiceImpl implements FileSystemStorageService {
         }
     }
 
+
+
+
     @Override
     public Resource loadAsResource(String filename) {
         Resource resource = load(filename);
@@ -161,5 +165,50 @@ public class FileSystemStorageServiceImpl implements FileSystemStorageService {
             return null;
         }
     }
+
+
+
+
+    @Override
+    public List<FileInfo> loadAllByFileType(String fileType) {
+        try {
+            return Files.walk(this.root, 1)
+                    .filter(path -> !path.equals(this.root))
+                    .filter(path -> !path.toFile().isDirectory())
+                    .filter(path -> {
+                        try {
+                            return Objects.nonNull(Files.probeContentType(path)) && Files.probeContentType(path).equals(fileType);
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                    })
+                    .map(path -> {
+                        FileInfo fileInfo = new FileInfo();
+                        fileInfo.setFileName(path.getFileName().toString());
+                        fileInfo.setUrl(MvcUriComponentsBuilder.fromMethodName(FileController.class,
+                                        "serveFile", path.getFileName().toString())
+                                .build().toUri().toString());
+                        try {
+                            fileInfo.setType(Files.probeContentType(path));
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                        fileInfo.setSize(path.toFile().length());
+                        return fileInfo;
+                    })
+                    .collect(Collectors.toList());
+        } catch (IOException e) {
+            throw new RuntimeException("No se pudieron cargar los archivos!", e);
+        }
+    }
+
+
+
+
+
+
+
+
+
 
 }
