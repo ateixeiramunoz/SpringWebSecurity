@@ -2,12 +2,7 @@
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org"
 >
-<head>
-  <title th:text="#{app.title}">EOI </title>
-  <link href="/webjars/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-  <link href="/main.css" rel="stylesheet">
-  <script type="text/javascript" src="/webjars/bootstrap/js/bootstrap.min.js"></script>
-  <script type="text/javascript" src="/webjars/jquery/jquery.min.js"></script>
+<head th:replace="fragments/head :: head">
 </head>
 <body>
 <div th:replace="fragments/header :: header">
@@ -16,11 +11,11 @@
   <div class="row col-md-8 offset-md-2">
     <div class="card">
       <div class="card-header">
-        <h2 class="text-center">Registration</h2>
+        <h2 class="text-center">Registro de usuario</h2>
       </div>
       <div th:if="${param.success}">
         <div class="alert alert-info">
-          You have successfully registered our app!
+          Te has registrado correctamente!
         </div>
       </div>
       <div class="card-body">
