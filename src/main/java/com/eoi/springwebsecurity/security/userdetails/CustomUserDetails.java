@@ -1,9 +1,13 @@
 package com.eoi.springwebsecurity.security.userdetails;
 
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Controller;
 
 import java.util.Collection;
+
 
 /**
  * The type Custom user details.

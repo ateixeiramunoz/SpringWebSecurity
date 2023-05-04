@@ -5,6 +5,7 @@ import com.eoi.springwebsecurity.coreapp.entities.Role;
 import com.eoi.springwebsecurity.coreapp.entities.User;
 import com.eoi.springwebsecurity.coreapp.repositories.RoleRepository;
 import com.eoi.springwebsecurity.coreapp.repositories.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -20,27 +21,18 @@ import java.util.stream.Collectors;
 @Service
 public class UserServiceImpl implements UserService {
 
-    private final UserRepository userRepository;
-    private final RoleRepository roleRepository;
-    private final PasswordEncoder passwordEncoder;
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private RoleRepository roleRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Value("${default.user.role}") // (from application.properties
     private String defaultUserRole;
 
-    /**
-     * Instantiates a new User service.
-     *
-     * @param userRepository  the user repository
-     * @param roleRepository  the role repository
-     * @param passwordEncoder the password encoder
-     */
-    public UserServiceImpl(UserRepository userRepository,
-                           RoleRepository roleRepository,
-                           PasswordEncoder passwordEncoder) {
-        this.userRepository = userRepository;
-        this.roleRepository = roleRepository;
-        this.passwordEncoder = passwordEncoder;
-    }
 
     @Override
     public void saveUser(UserDto userDto) {
