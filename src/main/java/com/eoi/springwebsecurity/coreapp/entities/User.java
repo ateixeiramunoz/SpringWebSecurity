@@ -1,5 +1,6 @@
 package com.eoi.springwebsecurity.coreapp.entities;
 
+import com.eoi.springwebsecurity.calendario.entities.Evento;
 import com.eoi.springwebsecurity.filemanagement.entities.FileDB;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -51,6 +52,13 @@ public class User
             inverseJoinColumns={@JoinColumn(name="FILE_ID", referencedColumnName="ID")})
     private List<FileDB> filesDB = new ArrayList<>();
 
+
+    @ManyToMany(fetch = FetchType.EAGER, cascade=CascadeType.ALL)
+    @JoinTable(
+            name="users_eventos",
+            joinColumns={@JoinColumn(name="USER_ID", referencedColumnName="ID")},
+            inverseJoinColumns={@JoinColumn(name="EVENTO_ID", referencedColumnName="ID")})
+    private List<Evento> eventos = new ArrayList<>();
 
     @Column(name = "reset_password_token")
     private String resetPasswordToken;

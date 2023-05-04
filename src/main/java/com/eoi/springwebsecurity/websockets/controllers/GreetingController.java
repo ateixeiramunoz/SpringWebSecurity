@@ -1,5 +1,7 @@
 package com.eoi.springwebsecurity.websockets.controllers;
 
+import com.eoi.springwebsecurity.websockets.entities.Notificacion;
+import com.eoi.springwebsecurity.websockets.entities.NotificacionRepository;
 import com.eoi.springwebsecurity.websockets.messages.Greeting;
 import com.eoi.springwebsecurity.websockets.messages.HelloMessage;
 import com.eoi.springwebsecurity.websockets.messages.PrivateMessage;
@@ -10,6 +12,7 @@ import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.util.HtmlUtils;
 
 
@@ -25,6 +28,9 @@ public class GreetingController {
      */
     @Autowired
     SimpMessagingTemplate simpMessagingTemplate;
+
+    @Autowired
+    NotificacionRepository  notificacionRepository;
 
 
     /**
@@ -51,10 +57,16 @@ public class GreetingController {
     @MessageMapping("/private")
     public void sendToSpecificUser(@Payload PrivateMessage message) {
 
+        Notificacion notificacion = new Notificacion();
+        notificacion.setFrom(message.getFrom());
+        notificacion.setFrom(message.getTo());
+        notificacion.setMensaje(message.getText());
+        notificacion.setEstado("pendiente");
         log.info("Recibida petición de mensaje privado");
         simpMessagingTemplate.convertAndSendToUser(message.getTo(), "/specific", message);
 
     }
+
 
 
 
