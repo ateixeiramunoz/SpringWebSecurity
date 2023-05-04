@@ -136,6 +136,10 @@ public class SecurityConfig {
                         //Aceptar a todos los usuarios para stream de videos
                         .requestMatchers("/stream/**").authenticated()
 
+
+                        //Peticiones asociadas a la parte de citas o notificaciones asincronas
+                        .requestMatchers("/cita/**").authenticated()
+
                         // Peticiones permitidas sólo para usuarios autenticados con rol USER
                         .requestMatchers("/user/**").hasRole("USER")
 

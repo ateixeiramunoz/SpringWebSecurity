@@ -1,6 +1,15 @@
 // Declara una variable global que se usará para manejar la conexión a través del protocolo STOMP
 var stompClient = null;
 
+$( document ).ready(function() {
+
+   $("#connect").on( "click",connect());
+   $("#disconnect").on( "click",disconnect());
+
+
+});
+
+
 // Función que actualiza la interfaz de usuario para reflejar el estado de conexión
 function setConnected(connected) {
     // Deshabilita el botón "Conectar" si ya está conectado
@@ -21,6 +30,8 @@ function setConnected(connected) {
 
 // Función que se conecta al servidor STOMP a través de un socket SockJS
 function connect() {
+
+
     // Crea un objeto socket que se conecta a la URL '/gs-guide-websocket'
     var socket = new SockJS('/gs-guide-websocket');
     // Crea un objeto STOMP sobre el socket
@@ -68,6 +79,10 @@ function disconnect() {
 function sendHelloMessage() {
     stompClient.send("/app/hello", {}, JSON.stringify({'name': $("#name").val()}));
 }
+
+
+
+
 
 
 // Función que envía un mensaje privado a otro usuario
