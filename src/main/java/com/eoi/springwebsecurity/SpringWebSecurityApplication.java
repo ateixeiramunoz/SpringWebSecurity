@@ -6,12 +6,17 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
+
 
 /**
  * The type Spring web security application.
  */
 @SpringBootApplication
 @EnableAutoConfiguration
+@EnableScheduling
 public class SpringWebSecurityApplication implements CommandLineRunner {
 
     /**
@@ -20,6 +25,11 @@ public class SpringWebSecurityApplication implements CommandLineRunner {
     @Autowired
     FileSystemStorageService fileSystemStorageService;
 
+    @Autowired
+    ThreadPoolTaskScheduler threadPoolTaskScheduler;
+
+    @Autowired
+    SimpMessagingTemplate simpMessagingTemplate;
     /**
      * The entry point of application.
      *
@@ -38,5 +48,10 @@ public class SpringWebSecurityApplication implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         fileSystemStorageService.init();
+
+
+
+
+
     }
 }
