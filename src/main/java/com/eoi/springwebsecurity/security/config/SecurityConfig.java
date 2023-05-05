@@ -122,13 +122,14 @@ public class SecurityConfig {
                         .requestMatchers("/gs-guide-websocket/**").permitAll()
 
                         //Peticiones asociadas al calendario
-                        .requestMatchers("/calendario/**", "/calendarios/**", "/eventos/**").permitAll()
+                        .requestMatchers("/usersPaginados","/calendario/**", "/calendarios/**", "/eventos/**").permitAll()
                         // Peticiones permitidas sólo para usuarios con rol ADMIN
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .requestMatchers("/users").hasRole("ADMIN")
 
                         // Peticiones permitidas sólo para usuarios autenticados
-                        .requestMatchers("/chat", "/videos", "/files/**", "/upload", "/userFiles/**", "/databasefiles" +
+                        .requestMatchers("/chat", "/videos", "/files/**", "/upload",
+                 "/userFiles/**", "/databasefiles" +
                                 "/**").authenticated()
                         .requestMatchers("/uploadUserFileToDatabase", "/uploadUserFileToFileSystem",
                                 "/uploadToFileSystem", "/uploadToDatabase").authenticated()

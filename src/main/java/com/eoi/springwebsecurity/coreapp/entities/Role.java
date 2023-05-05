@@ -1,5 +1,6 @@
 package com.eoi.springwebsecurity.coreapp.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -26,6 +27,8 @@ public class Role
     @Column(nullable=false, unique=true)
     private String name;
 
+
+    @JsonBackReference
     @ManyToMany(mappedBy="roles")
     private List<User> users;
 }
