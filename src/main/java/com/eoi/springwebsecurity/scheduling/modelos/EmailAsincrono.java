@@ -30,17 +30,12 @@ public class EmailAsincrono implements Runnable{
 
     @Override
         public void run() {
-        try {
+
             emailService.sendEmail("mail.alejandro.teixeira@gmail.com",
                     "",
                     "");
-        }
-        catch (MessagingException e) {
-            throw new RuntimeException(e);
-        }
-        catch (UnsupportedEncodingException e) {
-            throw new RuntimeException(e);
-        }
+
+
     }
 
 }
