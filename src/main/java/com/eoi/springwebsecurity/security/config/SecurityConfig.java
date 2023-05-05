@@ -128,7 +128,7 @@ public class SecurityConfig {
                         .requestMatchers("/users").hasRole("ADMIN")
 
                         // Peticiones permitidas sólo para usuarios autenticados
-                        .requestMatchers("/chat", "/videos", "/files/**", "/upload",
+                        .requestMatchers("/calendarioHTML","/chat", "/videos", "/files/**", "/upload",
                  "/userFiles/**", "/databasefiles" +
                                 "/**").authenticated()
                         .requestMatchers("/uploadUserFileToDatabase", "/uploadUserFileToFileSystem",
