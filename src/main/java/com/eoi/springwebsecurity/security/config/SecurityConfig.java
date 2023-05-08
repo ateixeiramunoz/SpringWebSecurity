@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -30,6 +31,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
  */
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity
 public class SecurityConfig {
 
     /**
@@ -125,10 +127,11 @@ public class SecurityConfig {
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .requestMatchers("/users").hasRole("ADMIN")
                         // Peticiones permitidas sólo para usuarios autenticados
-                        .requestMatchers("/calendarioHTML","/chat", "/videos", "/files/**", "/upload", "/test",
+                        .requestMatchers("/calendarioHTML","/chat", "/videos", "/files/**", "/upload", "/test/**",
                  "/userFiles/**", "/databasefiles" +
                                 "/**").authenticated()
-                        .requestMatchers("/uploadUserFileToDatabase", "/uploadUserFileToFileSystem",
+                        .requestMatchers("/uploadUserFileToDatabaseStoreInFileSystem","/uploadUserFileToDatabase",
+                                "/uploadUserFileToFileSystem",
                                 "/uploadToFileSystem", "/uploadToDatabase").authenticated()
 
                         //Aceptar a todos los usuarios para stream de videos

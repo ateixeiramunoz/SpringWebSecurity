@@ -57,6 +57,8 @@ public interface FileSystemStorageService {
     List<FileInfo> loadAll();
 
 
+    List<FileInfo> loadAllFromUser(Long userId);
+
     /**
      * Load as resource resource.
      *

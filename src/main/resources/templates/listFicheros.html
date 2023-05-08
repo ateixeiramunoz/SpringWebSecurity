@@ -65,6 +65,23 @@
         </form>
       </div>
     </div>
+
+
+
+    <!-- Tarjeta para subir archivos a la Base de Datos -->
+    <div class="card mt-3">
+      <div class="card-body">
+        <span class="card-title h5">Subir registro de archivo personal a la base de datos pero guardarlo en
+          FileSystem</span>
+        <form method="POST" enctype="multipart/form-data" th:action="@{/uploadUserFileToDatabaseStoreInFileSystem}">
+          <div class="input-group mb-3">
+            <input name="file" type="file" class="form-control" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1">
+          </div>
+          <button type="submit" class="btn btn-primary">Subir</button>
+        </form>
+      </div>
+    </div>
+
   </div>
 
 
@@ -185,16 +202,16 @@
 
 
 
-    <!-- Sección para mostrar la lista de archivos en la Base de Datos -->
+    <!-- Sección para mostrar la lista de Archivos de usuario en el filesystem -->
     <div class="container">
       <div class="card mt-6">
         <div class="card-header">
           <h5 class="card-title">Archivos de usuario en el filesystem</h5>
         </div>
         <div class="card-body">
-          <div th:if="${not #lists.isEmpty(USERfiles)}">
+          <div th:if="${not #lists.isEmpty(userFiles)}">
             <ul class="list-group">
-              <li th:each="file : ${USERfiles}" class="list-group-item">
+              <li th:each="file : ${userFiles}" class="list-group-item">
                 <div class="d-flex justify-content-between align-items-center">
                   <span th:text="${file.fileName}"></span>
                   <span th:text="${file.size}"></span>

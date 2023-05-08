@@ -45,9 +45,13 @@ public class SpringWebSecurityApplication {
         SpringApplication.run(SpringWebSecurityApplication.class, args);
     }
 
+
+    /**
+     * Método para iniciar los valores o configuraciones por defecto de la aplicación. La anotación @PostConstruct
+     * indica a Spring que el método se debe ejecutar inmediatamente después de la construcción de la clase.
+     */
     @PostConstruct
     public void init() {
         fileSystemStorageService.init();
-
     }
 }

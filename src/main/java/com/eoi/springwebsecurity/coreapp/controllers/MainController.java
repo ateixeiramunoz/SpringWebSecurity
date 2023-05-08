@@ -1,11 +1,14 @@
 package com.eoi.springwebsecurity.coreapp.controllers;
 
 import com.eoi.springwebsecurity.coreapp.dto.UserDto;
+import com.eoi.springwebsecurity.coreapp.services.DefaultService;
 import com.eoi.springwebsecurity.security.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 
 import java.security.Principal;
@@ -19,6 +22,9 @@ public class MainController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private DefaultService defaultService;
 
 
     /**
@@ -79,8 +85,9 @@ public class MainController {
         return "chat";
     }
 
-    @GetMapping("/test")
-    public String test(Principal principal, Model model){
+
+    @GetMapping("/test/{id}")
+    public String test(@PathVariable("id") Integer id, Principal principal, Model model){
 
         String userID = principal.getName();
         model.addAttribute("user", userService.findUserByEmail(userID));
