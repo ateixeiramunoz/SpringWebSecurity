@@ -5,12 +5,13 @@ import com.eoi.springwebsecurity.coreapp.repositories.UserRepository;
 import com.eoi.springwebsecurity.filemanagement.entities.FileDB;
 import com.eoi.springwebsecurity.filemanagement.models.FileInfo;
 import com.eoi.springwebsecurity.filemanagement.repositories.FileDBRepository;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
@@ -21,6 +22,7 @@ import java.util.stream.Stream;
  * The type Db file storage service.
  */
 @Service
+@Log4j2
 public class DBFileStorageService {
 
     @Autowired
@@ -36,16 +38,21 @@ public class DBFileStorageService {
      */
     public FileDB store(MultipartFile file)  {
 
+        //Obtenemos el nombre del fichero que se ha subido en el formulario
         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+        //Creamos el objeto de tipo entidad FileDB para guardar la info en la BD
         FileDB fileDB;
         try {
+            //Obtenemos el Content-Type y los Bytes del archivo
             fileDB = new FileDB(null,fileName, file.getContentType(), file.getBytes());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
 
+        //Guardamos en base de datos la instancia de entidad que hemos creado
         fileDB = fileDBRepository.save(fileDB);
 
+        //Devolvemos el objeto grabado
         return fileDB;
     }
 
@@ -68,6 +75,24 @@ public class DBFileStorageService {
             throw new RuntimeException(e);
         }
 
+        fileDB = fileDBRepository.save(fileDB);
+        user.getFilesDB().add(fileDB);
+        userRepository.save(user);
+
+        return fileDB;
+    }
+
+    /**
+     * Método que guarda un fichero de un usuario en base de datos
+     *
+     * @param file the file
+     * @return the file db
+     */
+    public FileDB storeUserFileWithoutData(@Nullable MultipartFile file, User user)  {
+
+        String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+        FileDB fileDB;
+        fileDB = new FileDB(null,fileName, file.getContentType(), null);
         fileDB = fileDBRepository.save(fileDB);
         user.getFilesDB().add(fileDB);
         userRepository.save(user);
@@ -108,7 +133,13 @@ public class DBFileStorageService {
             fileInfo.setId(file.getId());
             fileInfo.setUrl("/files/" + file.getId());
             fileInfo.setType(file.getType());
-            fileInfo.setSize(file.getData().length);
+            if(file.getData() == null)
+            {
+                fileInfo.setSize(0);
+            }
+            else {
+                fileInfo.setSize(file.getData().length);
+            }
             return fileInfo;
         }).collect(Collectors.toList());
     }
@@ -121,7 +152,18 @@ public class DBFileStorageService {
             fileInfo.setId(file.getId());
             fileInfo.setUrl("/files/" + file.getId());
             fileInfo.setType(file.getType());
-            fileInfo.setSize(file.getData().length);
+            //Significa que el fichero esta guardado en la base de datos, pero que no se han guardado sus bytes o
+            // contenido
+            if(file.getData() == null)
+            {
+                //Si en efecto no hemos guardado el contenido en la base de datos como blob, informamos a 0 el tamaño
+                fileInfo.setSize(0);
+            }
+            else
+            {
+                //Obtenemos el tamaño del fichero guardado en base de datos si el campo blob esta relleno
+                fileInfo.setSize(file.getData().length);
+            }
             return fileInfo;
         }).collect(Collectors.toList());
 

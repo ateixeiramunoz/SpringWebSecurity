@@ -1,13 +1,12 @@
 package com.eoi.springwebsecurity.security.service;
 
-
 import com.eoi.springwebsecurity.coreapp.entities.Role;
 import com.eoi.springwebsecurity.coreapp.entities.User;
 import com.eoi.springwebsecurity.coreapp.repositories.UserRepository;
+import com.eoi.springwebsecurity.security.userdetails.CustomUserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -34,16 +33,7 @@ import java.util.List;
 public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Autowired
-    private final UserRepository userRepository; // Inyección de dependencia del UserRepository
-
-    /**
-     * Constructor de la clase UserDetailsServiceImpl que inicializa el UserRepository.
-     *
-     * @param userRepository Repositorio de usuarios que se utiliza para buscar y cargar usuarios.
-     */
-    public UserDetailsServiceImpl(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
+    private UserRepository userRepository; // Inyección de dependencia del UserRepository
 
 
     /**
@@ -55,15 +45,20 @@ public class UserDetailsServiceImpl implements UserDetailsService {
      * @throws UsernameNotFoundException Excepción lanzada si no se encuentra ningún usuario con el email proporcionado.
      */
     @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+    public CustomUserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         // Buscar el usuario por su email utilizando el UserRepository
         User user = userRepository.findByEmail(email);
 
         // Si el usuario es encontrado, crear una instancia de UserDetails utilizando los datos del usuario
         if (user != null) {
-            return new org.springframework.security.core.userdetails.User(user.getEmail(),
+            CustomUserDetails customUserDetails = new CustomUserDetails(
+                    user.getEmail(),
                     user.getPassword(),
-                    mapRolesToAuthorities(user.getRoles())); // mapRolesToAuthorities es una función auxiliar que se define más abajo
+                    user.getName(),
+                    mapRolesToAuthorities(user.getRoles())
+                    );
+            return customUserDetails;
+
         }else{
             // Si el usuario no es encontrado, lanzar una excepción UsernameNotFoundException
             throw new UsernameNotFoundException("Invalid username or password.");
@@ -83,5 +78,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 .map(role -> new SimpleGrantedAuthority(role.getName()))
                 .toList(); // Convertir el stream en una lista
     }
+
+
+
 }
 

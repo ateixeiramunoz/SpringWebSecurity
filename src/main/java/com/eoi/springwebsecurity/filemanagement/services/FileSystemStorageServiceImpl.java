@@ -27,6 +27,7 @@ import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBui
 @Log4j2
 public class FileSystemStorageServiceImpl implements FileSystemStorageService {
 
+
     private final Path root = Paths.get("uploads");
 
 
@@ -48,6 +49,8 @@ public class FileSystemStorageServiceImpl implements FileSystemStorageService {
             throw new RuntimeException("No se pudo inicializar el directorio de almacenamiento de archivos!");
         }
     }
+
+
 
     /**
      * Guarda el archivo en el directorio de almacenamiento de archivos.
@@ -99,10 +102,14 @@ public class FileSystemStorageServiceImpl implements FileSystemStorageService {
     @Override
     public Resource load(String filename) {
         try {
+            //Crea un objeto "Path" para controlar los directorios o ficheros. En este caso, el nombre del fichero a
+            // recoger.
             Path file = root.resolve(filename);
+            //Crea un objeto recurso, convirtiendo el objeto a data:URI
             Resource resource = new UrlResource(file.toUri());
-
-            if (resource.exists() || resource.isReadable()) {
+            //Si el objeto recurso se ha creado correctamente y se puede leer, lo devuelve al servicio de Streaming
+            // para ser servido como objeto Mono (objeto de Stream).
+            if (resource.exists() &&  resource.isReadable()) {
                 return resource;
             } else {
                 throw new RuntimeException("No se pudo leer el archivo!");
@@ -154,6 +161,42 @@ public class FileSystemStorageServiceImpl implements FileSystemStorageService {
     }
 
 
+
+    @Override
+    public List<FileInfo> loadAllFromUser(Long userId) {
+
+        try {
+
+            Path userPath = this.root.resolve(String.valueOf(userId));
+            if(!Files.exists(userPath))
+            {
+                Files.createDirectories(userPath);
+            }
+
+            return Files.walk(userPath, 1)
+                    .filter(path -> !path.equals(userPath))
+                    .filter(path -> !path.toFile().isDirectory())
+                    .map(path -> {
+                        FileInfo fileInfo = new FileInfo();
+                        fileInfo.setFileName(path.getFileName().toString());
+                        fileInfo.setUrl(MvcUriComponentsBuilder.fromMethodName(FileController.class,
+                                        "serveFile", path.getFileName().toString())
+                                .build().toUri().toString());
+                        try {
+                            fileInfo.setType(Files.probeContentType(path));
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                        fileInfo.setSize(path.toFile().length());
+                        return fileInfo;
+                    })
+                    .collect(Collectors.toList());
+        } catch (IOException e) {
+            throw new RuntimeException("No se pudieron cargar los archivos!", e);
+        }
+    }
+
+
     @Override
     public Resource loadAsResource(String filename) {
         Resource resource = load(filename);
@@ -174,15 +217,6 @@ public class FileSystemStorageServiceImpl implements FileSystemStorageService {
                 throw new RuntimeException(e);
             }
     }
-
-
-
-
-
-
-
-
-
 
 
     @Override
@@ -217,14 +251,5 @@ public class FileSystemStorageServiceImpl implements FileSystemStorageService {
             throw new RuntimeException("No se pudieron cargar los archivos!", e);
         }
     }
-
-
-
-
-
-
-
-
-
 
 }

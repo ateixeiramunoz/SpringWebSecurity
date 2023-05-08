@@ -4,10 +4,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
@@ -29,6 +31,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
  */
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity
 public class SecurityConfig {
 
     /**
@@ -74,10 +77,10 @@ public class SecurityConfig {
      * Esto significa que el tiempo necesario para codificar la contraseña aumenta a medida que el nivel de seguridad
      * deseado aumenta, lo que dificulta su fuerza bruta.
      *
-     * @return BCryptPasswordEncoder Bean de codificación de contraseñas con BCrypt.
+     * @return PasswordEncoder Bean de codificación de contraseñas con BCrypt.
      */
     @Bean
-    public BCryptPasswordEncoder passwordEncoder() {
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
@@ -109,9 +112,7 @@ public class SecurityConfig {
                   De lo contrario, deberíamos hacer dicha gestión a mano.
                  */
                 //.csrf().disable();
-
                 .authorizeHttpRequests(authorize -> authorize
-
                         // Peticiones permitidas para todos los usuarios
                         .requestMatchers("/index", "/", "").permitAll()
                         .requestMatchers("/webjars/**", "/js/**", "/css/**", "/img/**", "/fonts/**", "/favicon.ico").permitAll()
@@ -120,23 +121,23 @@ public class SecurityConfig {
                                 "/error", "/login").permitAll()
                         //Peticiones asociadas a las notificaciones y conexiones websocket
                         .requestMatchers("/gs-guide-websocket/**").permitAll()
-
                         //Peticiones asociadas al calendario
                         .requestMatchers("/usersPaginados","/calendario/**", "/calendarios/**", "/eventos/**").permitAll()
                         // Peticiones permitidas sólo para usuarios con rol ADMIN
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .requestMatchers("/users").hasRole("ADMIN")
-
                         // Peticiones permitidas sólo para usuarios autenticados
-                        .requestMatchers("/calendarioHTML","/chat", "/videos", "/files/**", "/upload",
+                        .requestMatchers("/calendarioHTML","/chat", "/videos", "/files/**", "/upload", "/test/**",
                  "/userFiles/**", "/databasefiles" +
                                 "/**").authenticated()
-                        .requestMatchers("/uploadUserFileToDatabase", "/uploadUserFileToFileSystem",
+                        .requestMatchers("/uploadUserFileToDatabaseStoreInFileSystem","/uploadUserFileToDatabase",
+                                "/uploadUserFileToFileSystem",
                                 "/uploadToFileSystem", "/uploadToDatabase").authenticated()
 
                         //Aceptar a todos los usuarios para stream de videos
                         .requestMatchers("/stream/**").authenticated()
 
+                        .requestMatchers("/security/**").authenticated()
 
                         //Peticiones asociadas a la parte de citas o notificaciones asincronas
                         .requestMatchers("/cita/**").authenticated()

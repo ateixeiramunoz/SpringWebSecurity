@@ -18,12 +18,4 @@ public class SchedulingConfig {
         return threadPoolTaskScheduler;
     }
 
-
-
-
-
-
-
-
-
 }

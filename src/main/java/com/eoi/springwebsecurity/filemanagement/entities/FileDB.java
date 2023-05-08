@@ -47,8 +47,7 @@ public class FileDB {
      * Datos del archivo almacenados como un array de bytes en la base de datos.
      */
     @Lob
-    @NotEmpty
-    @Column(name="data", nullable=false, columnDefinition="LONGBLOB")
+    @Column(name="data", columnDefinition="LONGBLOB")
     private byte[] data;
 
     @ManyToMany(mappedBy="filesDB")

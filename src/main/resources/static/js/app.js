@@ -50,11 +50,18 @@ function connect() {
         });
         // Se suscribe al canal '/user/specific' para recibir mensajes privados
         stompClient.subscribe('/user/specific', function (message) {
-            // Imprime un mensaje en la consola del navegador
-            console.log("RECIBIDO MENSAJE PERSONAL");
             // Muestra el mensaje privado en la interfaz de usuario
             showPrivate(JSON.parse(message.body).text, JSON.parse(message.body).from );
         });
+
+        function onMessageReceived(message) {
+          // Manejar mensaje recibido del servidor
+          // Enviar confirmación de lectura
+          const messageId = message.headers['message-id'];
+          client.send('/message-received', {}, JSON.stringify({ messageId: messageId }));
+        }
+
+
     });
 }
 

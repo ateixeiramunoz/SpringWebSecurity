@@ -18,17 +18,21 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name="roles")
-public class Role
-{
+public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable=false, unique=true)
+    @Column(nullable = false, unique = true)
     private String name;
 
-
     @JsonBackReference
-    @ManyToMany(mappedBy="roles")
+    @ManyToMany(mappedBy = "roles")
     private List<User> users;
+
+    public Role (String name)
+    {
+        this.name = name;
+    }
+
 }

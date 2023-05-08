@@ -1,5 +1,9 @@
 package com.eoi.springwebsecurity.security.userdetails;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.core.GrantedAuthority;
@@ -12,6 +16,9 @@ import java.util.Collection;
 /**
  * The type Custom user details.
  */
+@Getter
+@Setter
+@NoArgsConstructor
 public class CustomUserDetails implements UserDetails {
 
     private String username;
@@ -33,7 +40,6 @@ public class CustomUserDetails implements UserDetails {
         this.name = name;
         this.authorities = authorities;
     }
-
 
     /**
      * Returns the authorities granted to the user. Cannot return <code>null</code>.
@@ -75,7 +81,7 @@ public class CustomUserDetails implements UserDetails {
      */
     @Override
     public boolean isAccountNonExpired() {
-        return false;
+        return true;
     }
 
     /**
@@ -86,7 +92,7 @@ public class CustomUserDetails implements UserDetails {
      */
     @Override
     public boolean isAccountNonLocked() {
-        return false;
+        return true;
     }
 
     /**
@@ -98,7 +104,7 @@ public class CustomUserDetails implements UserDetails {
      */
     @Override
     public boolean isCredentialsNonExpired() {
-        return false;
+        return true;
     }
 
     /**
@@ -109,6 +115,6 @@ public class CustomUserDetails implements UserDetails {
      */
     @Override
     public boolean isEnabled() {
-        return false;
+        return true;
     }
 }

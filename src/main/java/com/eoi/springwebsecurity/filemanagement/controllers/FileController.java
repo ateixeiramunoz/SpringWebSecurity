@@ -6,6 +6,7 @@ import com.eoi.springwebsecurity.filemanagement.models.FileInfo;
 import com.eoi.springwebsecurity.filemanagement.services.DBFileStorageService;
 import com.eoi.springwebsecurity.filemanagement.services.FileSystemStorageService;
 import com.eoi.springwebsecurity.security.service.UserService;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.data.jpa.repository.Query;
@@ -30,6 +31,7 @@ import java.util.List;
  * y almacenamiento de archivos, así como para el acceso a la base de datos de archivos.
  */
 @Controller
+@Log4j2
 @CrossOrigin("http://localhost:8080")
 public class FileController {
 
@@ -73,6 +75,13 @@ public class FileController {
     @GetMapping("/files")
     public String listAllUploadedFiles(Model model,Authentication authentication) throws IOException {
 
+
+        //Obtenemos el nombre de usuario del objeto de autenticacion
+        String username = authentication.getName();
+        // Buscamos al usuario correspondiente al nombre de usuario obtenido anteriormente.
+        User user = userService.findUserByEmail(username);
+
+
         // Obtenemos todos los archivos almacenados en el servicio de almacenamiento predeterminado.
         // Para cada archivo, generamos una URL que permita descargar el archivo desde el servidor.
         List<FileInfo> files = fileSystemStorageService.loadAll();
@@ -81,10 +90,8 @@ public class FileController {
         // Para cada archivo, generamos una URL que permita descargar el archivo desde el servidor.
         List<FileInfo> dbFiles = dbFileStorageService.getAllFileInfos();
 
-        //Obtenemos el nombre de usuario del objeto de autenticacion
-        String username = authentication.getName();
-        // Buscamos al usuario correspondiente al nombre de usuario obtenido anteriormente.
-        User user = userService.findUserByEmail(username);
+        List<FileInfo> userFiles = fileSystemStorageService.loadAllFromUser(user.getId());
+
 
         // Obtenemos todos los archivos asociados al usuario y almacenados en la base de datos
         // Para cada archivo, generamos una URL que permita descargar el archivo desde el servidor.
@@ -95,7 +102,7 @@ public class FileController {
 
         // Agregamos los objetos FileInfo del servicio de almacenamiento de la base de datos al modelo.
         model.addAttribute("DBfiles", dbFiles);
-
+        model.addAttribute("userFiles", userFiles);
         model.addAttribute("dbUserFiles", dbUserFiles);
 
 
@@ -180,6 +187,41 @@ public class FileController {
             return "error";
         }
     }
+
+
+    @PostMapping("/uploadUserFileToDatabaseStoreInFileSystem")
+    public String uploadUserFileToDatabaseStoreInFileSystem(@RequestParam("file") MultipartFile file,
+                                           RedirectAttributes redirectAttributes,
+                                           Authentication authentication) {
+        String message = "";
+        try {
+            //Obtenemos el nombre de usuario del objeto de autenticacion
+            String username = authentication.getName();
+            // Buscamos al usuario correspondiente al nombre de usuario obtenido anteriormente.
+            User user = userService.findUserByEmail(username);
+            // Almacenamos el archivo del usuario en la base de datos pero sin guardar sus datos
+            dbFileStorageService.storeUserFileWithoutData(file,user);
+            // Guardamos el fichero en el filesystem
+            fileSystemStorageService.saveUserFile(file,user.getId());
+            // Agregar mensaje a los atributos de la redirección
+            redirectAttributes.addFlashAttribute("message",
+                    "¡Archivo " + file.getOriginalFilename() + " cargado exitosamente a la base de datos!");
+
+            // Redirigir a la lista de archivos
+            return "redirect:/files";
+
+        } catch (Exception e) {
+
+            log.error("ERROR EN LA APLICACION", e);
+            // Agregar mensaje de error a los atributos de la redirección
+            redirectAttributes.addFlashAttribute("errorMsg", e.getLocalizedMessage());
+
+            // Redirigir a la página de error
+            return "error";
+        }
+    }
+
+
 
 
     /**

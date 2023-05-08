@@ -78,12 +78,9 @@ public class ForgotPasswordController {
             throws MessagingException, UnsupportedEncodingException {
         MimeMessage message = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message);
-
         helper.setFrom("cuentadepruebaspringboot@gmail.com", "Soporte EOI");
         helper.setTo(recipientEmail);
-
         String subject = "Link para reseteo de Password";
-
         String content = "<p>Hola,</p>"
                 + "<p>Has solicitado un reseteo de tu password.</p>"
                 + "<p>Pulsa en el siguiente link para cambiarla :</p>"
