@@ -1,6 +1,9 @@
 package com.eoi.springwebsecurity;
 
+import com.eoi.springwebsecurity.coreapp.entities.User;
+import com.eoi.springwebsecurity.coreapp.repositories.UserRepository;
 import com.eoi.springwebsecurity.filemanagement.services.FileSystemStorageService;
+import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -17,7 +20,7 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 @SpringBootApplication
 @EnableAutoConfiguration
 @EnableScheduling
-public class SpringWebSecurityApplication implements CommandLineRunner {
+public class SpringWebSecurityApplication {
 
     /**
      * The File system storage service.
@@ -30,6 +33,9 @@ public class SpringWebSecurityApplication implements CommandLineRunner {
 
     @Autowired
     SimpMessagingTemplate simpMessagingTemplate;
+    @Autowired
+    private UserRepository userRepository;
+
     /**
      * The entry point of application.
      *
@@ -39,19 +45,9 @@ public class SpringWebSecurityApplication implements CommandLineRunner {
         SpringApplication.run(SpringWebSecurityApplication.class, args);
     }
 
-    /**
-     * Callback used to run the bean.
-     *
-     * @param args incoming main method arguments
-     * @throws Exception on error
-     */
-    @Override
-    public void run(String... args) throws Exception {
+    @PostConstruct
+    public void init() {
         fileSystemStorageService.init();
-
-
-
-
 
     }
 }

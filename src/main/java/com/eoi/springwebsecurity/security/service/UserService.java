@@ -3,12 +3,15 @@ package com.eoi.springwebsecurity.security.service;
 
 import com.eoi.springwebsecurity.coreapp.dto.UserDto;
 import com.eoi.springwebsecurity.coreapp.entities.User;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
+
 
 /**
  * The interface User service.
  */
+@Service
 public interface UserService {
     /**
      * Save user.

@@ -5,12 +5,12 @@ import com.eoi.springwebsecurity.coreapp.repositories.UserRepository;
 import com.eoi.springwebsecurity.filemanagement.entities.FileDB;
 import com.eoi.springwebsecurity.filemanagement.models.FileInfo;
 import com.eoi.springwebsecurity.filemanagement.repositories.FileDBRepository;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
@@ -21,6 +21,7 @@ import java.util.stream.Stream;
  * The type Db file storage service.
  */
 @Service
+@Log4j2
 public class DBFileStorageService {
 
     @Autowired

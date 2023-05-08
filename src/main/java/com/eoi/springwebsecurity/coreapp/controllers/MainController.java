@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+
 import java.security.Principal;
 import java.util.List;
 
@@ -76,6 +77,15 @@ public class MainController {
         model.addAttribute("userID", userID);
 
         return "chat";
+    }
+
+    @GetMapping("/test")
+    public String test(Principal principal, Model model){
+
+        String userID = principal.getName();
+        model.addAttribute("user", userService.findUserByEmail(userID));
+        model.addAttribute("userID", userID);
+        return "test";
     }
 
 

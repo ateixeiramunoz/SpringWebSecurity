@@ -34,16 +34,7 @@ import java.util.List;
 public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Autowired
-    private final UserRepository userRepository; // Inyección de dependencia del UserRepository
-
-    /**
-     * Constructor de la clase UserDetailsServiceImpl que inicializa el UserRepository.
-     *
-     * @param userRepository Repositorio de usuarios que se utiliza para buscar y cargar usuarios.
-     */
-    public UserDetailsServiceImpl(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
+    private UserRepository userRepository; // Inyección de dependencia del UserRepository
 
 
     /**
