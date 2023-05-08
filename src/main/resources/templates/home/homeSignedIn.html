@@ -9,7 +9,8 @@
   <div class="hero-unit">
     <h1>EOI Spring Boot APP</h1>
     <p th:inline="text" class="alert alert-success">
-      Hola, <span sec:authentication="name"></span>. Bienvenido a la aplicación de demo de SpringBoot
+      Hola, <span th:text="${#authentication.principal.name}"></span>. Bienvenido a la aplicación de demo de
+      SpringBoot
     </p>
 
     <div class="alert alert-success" sec:authorize="isAuthenticated()">

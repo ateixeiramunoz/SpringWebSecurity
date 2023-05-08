@@ -4,11 +4,13 @@ import com.eoi.springwebsecurity.coreapp.dto.UserDto;
 import com.eoi.springwebsecurity.coreapp.services.DefaultService;
 import com.eoi.springwebsecurity.security.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.AuthorizationServiceException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.thymeleaf.extras.springsecurity6.auth.Authorization;
 
 
 import java.security.Principal;
@@ -93,6 +95,14 @@ public class MainController {
         model.addAttribute("user", userService.findUserByEmail(userID));
         model.addAttribute("userID", userID);
         return "test";
+    }
+
+
+    @GetMapping("/security")
+    public String test(Principal principal, Authorization authorization,Model model){
+        model.addAttribute("principal", principal);
+        model.addAttribute("authorization", authorization);
+        return "security";
     }
 
 
