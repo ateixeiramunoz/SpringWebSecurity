@@ -117,33 +117,47 @@ public class SecurityConfig {
                         .requestMatchers("/index", "/", "").permitAll()
                         .requestMatchers("/webjars/**", "/js/**", "/css/**", "/img/**", "/fonts/**", "/favicon.ico").permitAll()
                         .requestMatchers("*css", "*js").permitAll()
-                        .requestMatchers("/register/**", "/forgot_password", "/reset_password", "/signup", "/about",
-                                "/error", "/login").permitAll()
+                        .requestMatchers("/register/**", "/forgot_password", "/reset_password", "/signup", "/about","/error", "/login").permitAll()
                         //Peticiones asociadas a las notificaciones y conexiones websocket
                         .requestMatchers("/gs-guide-websocket/**").permitAll()
+
                         //Peticiones asociadas al calendario
-                        .requestMatchers("/usersPaginados","/calendario/**", "/calendarios/**", "/eventos/**").permitAll()
-                        // Peticiones permitidas sólo para usuarios con rol ADMIN
-                        .requestMatchers("/admin/**").hasRole("ADMIN")
-                        .requestMatchers("/users").hasRole("ADMIN")
+                        .requestMatchers("/paginacion",
+                                "/filtrado",
+                                "/calendario/**",
+                                "/calendarios/**",
+                                "/eventos" +
+                                "/**").permitAll()
+                         //Peticiones permitidas sólo para usuarios con rol ADMIN
+                        .requestMatchers("/admin/**").hasAuthority("ADMIN")
+                        .requestMatchers("/users").hasAuthority("ADMIN")
+
                         // Peticiones permitidas sólo para usuarios autenticados
-                        .requestMatchers("/calendarioHTML","/chat", "/videos", "/files/**", "/upload", "/test/**",
-                 "/userFiles/**", "/databasefiles" +
-                                "/**").authenticated()
-                        .requestMatchers("/uploadUserFileToDatabaseStoreInFileSystem","/uploadUserFileToDatabase",
+                        .requestMatchers(
+                                "/calendarioHTML",
+                                "/chat",
+                                "/videos",
+                                "/numeroNotificaciones",
+                                "/notificaciones",
+                                "/leerNotificacion/**",
+                                "/files/**",
+                                "/upload",
+                                "/test/**",
+                                "/userFiles/**",
+                                "/databasefiles/**",
+                                "/uploadUserFileToDatabaseStoreInFileSystem",
+                                "/uploadUserFileToDatabase",
                                 "/uploadUserFileToFileSystem",
-                                "/uploadToFileSystem", "/uploadToDatabase").authenticated()
+                                "/uploadToFileSystem",
+                                "/uploadToDatabase",
+                                "/scheduling/**").authenticated()
 
                         //Aceptar a todos los usuarios para stream de videos
                         .requestMatchers("/stream/**").authenticated()
-
                         .requestMatchers("/security/**").authenticated()
-
-                        //Peticiones asociadas a la parte de citas o notificaciones asincronas
-                        .requestMatchers("/cita/**").authenticated()
-
                         // Peticiones permitidas sólo para usuarios autenticados con rol USER
                         .requestMatchers("/user/**").hasRole("USER")
+
 
                 ).formLogin(
                         form -> form
@@ -153,15 +167,12 @@ public class SecurityConfig {
                                 .defaultSuccessUrl("/") // Establece la ruta de redirección después de que el usuario
                                 // inicia sesión correctamente
                                 .permitAll() // Permite a cualquier usuario acceder a la página de inicio de sesión
-
                 ).logout(
                         logout -> logout
                                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout")) // Establece la ruta para
                                 // procesar la petición de cierre de sesión
                                 .permitAll() // Permite a cualquier usuario acceder a la página de cierre de sesión
                 );
-
         return http.build();
     }
-
 }

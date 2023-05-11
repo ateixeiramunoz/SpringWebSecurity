@@ -33,7 +33,6 @@ public class UserServiceImpl implements UserService {
     @Value("${default.user.role}") // (from application.properties
     private String defaultUserRole;
 
-
     @Override
     public void saveUser(UserDto userDto) {
         User user = new User();
@@ -46,6 +45,7 @@ public class UserServiceImpl implements UserService {
         if(role == null){
             role = addRoleIfNotExists();
         }
+
         user.setRoles(List.of(role));
         userRepository.save(user);
     }
@@ -62,6 +62,7 @@ public class UserServiceImpl implements UserService {
                 .map((user) -> mapToUserDto(user))
                 .collect(Collectors.toList());
     }
+
 
     private UserDto mapToUserDto(User user){
         UserDto userDto = new UserDto();

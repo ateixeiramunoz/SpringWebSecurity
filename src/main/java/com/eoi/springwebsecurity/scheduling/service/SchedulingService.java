@@ -12,10 +12,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.scheduling.support.CronTrigger;
+import org.springframework.scheduling.support.PeriodicTrigger;
 import org.springframework.stereotype.Component;
 
 import java.text.SimpleDateFormat;
+import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.concurrent.TimeUnit;
 
 
 @Component
@@ -59,7 +62,7 @@ public class SchedulingService {
     }
 
 
-
+/*
     public void crearAviso(Cita cita) {
         String expresionCron = "";
 
@@ -90,9 +93,47 @@ public class SchedulingService {
 
 
     }
+*/
+
+
+    public void crearAviso(Cita cita)
+    {
+        LocalDateTime fechaAviso =
+            cita.getFecha()
+                    .minusMinutes(cita.getNumeroMinutos())
+                    .minusHours(cita.getNumeroHoras())
+                    .minusDays(cita.getNumeroDias());
+
+        LocalDateTime fechaActual =
+                cita.getFecha()
+                        .minusMinutes(cita.getNumeroMinutos())
+                        .minusHours(cita.getNumeroHoras())
+                        .minusDays(cita.getNumeroDias());
+
+        Duration duracionEspera = Duration.between(fechaActual, fechaAviso);
+
+        //Creo un temporizador a partir de la hora actual
+        PeriodicTrigger periodicTrigger = new PeriodicTrigger( 1L, TimeUnit.MINUTES);
+
+        //Aplicamos el delay de inicio igual al tiempo que hay de diferencia entre la primera notificacion y la fecha
+        // actual
+        periodicTrigger.setInitialDelay(duracionEspera);
+
+        threadPoolTaskScheduler.schedule(
+                new NotificacionAsincrona(simpMessagingTemplate,
+                        "Tarea repetitiva con PeriodicTrigger",
+                        "mail.alejandro.teixeira@gmail.com",
+                        "mail.alejandro.teixeira@gmail.com"),
+                periodicTrigger
+        );
+
+
+
+    }
 
 
     public void crearAvisoMail(Cita cita) {
+
         String expresionCron = "";
 
         LocalDateTime fechaAviso =
