@@ -36,20 +36,10 @@ public class CalendarioHTMLController {
         int mes=1;
         int agno=2023;
         int dia=1;
-
-
         int totalDias;
-        if(month.isPresent())
-        {
-            mes=month.get();
-        }
-        log.info("DIA DE LA SEMANA DEL LUNES" + DayOfWeek.MONDAY.ordinal());
 
-        if(year.isPresent())
-        {
-            agno=year.get();
-        }
-
+        mes=month.orElse(mes);
+        agno=year.orElse(agno);
 
         //Creo un array MULTIDIMENSONAL que guardará LAS SEMANAS Y LOS días que quiero mostrar
         List<List<String>> dias = new ArrayList<>();
@@ -70,7 +60,6 @@ public class CalendarioHTMLController {
                 fila+=1;
                 List<String> semana = new ArrayList<>();
                 dias.add(semana);
-
                 if(fila==0)
                 {
                     for (int j=0;j<fechaEnUso.getDayOfWeek().ordinal(); j++)
@@ -78,7 +67,6 @@ public class CalendarioHTMLController {
                         dias.get(fila).add("");
                     }
                 }
-
             }
             dias.get(fila).add(String.valueOf(i));
         }

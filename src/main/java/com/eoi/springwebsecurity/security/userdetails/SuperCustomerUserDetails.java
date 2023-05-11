@@ -4,28 +4,28 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Controller;
 
 import java.util.Collection;
 
 
-/**
- * The type Custom user details.
- */
 @Getter
 @Setter
 @NoArgsConstructor
-public class CustomUserDetails implements UserDetails {
+@AllArgsConstructor
+public class SuperCustomerUserDetails  implements UserDetails {
 
+
+   //Principales atributos de la clase
     private String username;
     private String password;
     private String name;
     private Integer edad;
+    private String email;
+    private Integer userID;
 
+    //Permisos
     private Collection<? extends GrantedAuthority> authorities;
 
     /**
@@ -36,14 +36,19 @@ public class CustomUserDetails implements UserDetails {
      * @param name        the name
      * @param authorities the authorities
      */
-    public CustomUserDetails(String username, String password, String name,
-                             Collection<? extends GrantedAuthority> authorities, Integer edad) {
+    public SuperCustomerUserDetails(String username, String password, String name,
+                                    Collection<? extends GrantedAuthority> authorities, Integer edad, String email,
+                                    Integer userID)
+     {
         this.username = username;
+        this.email = email;
         this.password = password;
         this.name = name;
         this.authorities = authorities;
         this.edad = edad;
+        this.userID = userID;
     }
+
 
     /**
      * Returns the authorities granted to the user. Cannot return <code>null</code>.

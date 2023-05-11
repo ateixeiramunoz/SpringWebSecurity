@@ -1,4 +1,4 @@
-package com.eoi.springwebsecurity.coreapp.controllers;
+package com.eoi.springwebsecurity.paginacion;
 
 import com.eoi.springwebsecurity.coreapp.entities.User;
 import com.eoi.springwebsecurity.coreapp.repositories.UserPagingRepository;
@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 @Controller
-public class MainPageController {
+public class PaginatedUserListController {
 
     /*
      *  https://www.bezkoder.com/thymeleaf-pagination-and-sorting-example/
@@ -23,11 +23,10 @@ public class MainPageController {
      *
      */
 
-
     @Autowired
     private UserPagingRepository userPagingRepository;
 
-    @GetMapping("/usersPaginados")
+    @GetMapping("/paginacion")
     public String findAllUsers(Model model,
                                @RequestParam("page") Optional<Integer> page,
                                @RequestParam("size") Optional<Integer> size
@@ -37,7 +36,6 @@ public class MainPageController {
         int pageSize = size.orElse(10);
 
         Page<User> pagina = userPagingRepository.findAll(PageRequest.of(currentPage - 1, pageSize));
-
         model.addAttribute("pagina", pagina);
 
         int totalPages = pagina.getTotalPages();
@@ -53,9 +51,6 @@ public class MainPageController {
         /*
             El código anterior, se puede sustituir por esta forma más tradicional de construir el array, si bien Java
             ahora dispone de las clases de Stream, por lo que se presupone que deberíamos utilizarlas.
-         */
-        /*
-
                 if (totalPages > 0) {
                     List<Integer> pageNumbers = new ArrayList<>();
                     for (int i = 1; i <= totalPages; i++) {
@@ -65,14 +60,7 @@ public class MainPageController {
                     model.addAttribute("pageNumbers", pageNumbers);
                 }
         */
-
-
-
         return "/paginacion/lista";
-
     }
-
-
-
 
 }

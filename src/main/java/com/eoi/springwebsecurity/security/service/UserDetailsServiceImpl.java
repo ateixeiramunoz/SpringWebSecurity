@@ -4,6 +4,7 @@ import com.eoi.springwebsecurity.coreapp.entities.Role;
 import com.eoi.springwebsecurity.coreapp.entities.User;
 import com.eoi.springwebsecurity.coreapp.repositories.UserRepository;
 import com.eoi.springwebsecurity.security.userdetails.CustomUserDetails;
+import com.eoi.springwebsecurity.security.userdetails.SuperCustomerUserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -45,20 +46,33 @@ public class UserDetailsServiceImpl implements UserDetailsService {
      * @throws UsernameNotFoundException Excepción lanzada si no se encuentra ningún usuario con el email proporcionado.
      */
     @Override
-    public CustomUserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+    public SuperCustomerUserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         // Buscar el usuario por su email utilizando el UserRepository
         User user = userRepository.findByEmail(email);
 
-        // Si el usuario es encontrado, crear una instancia de UserDetails utilizando los datos del usuario
+        // Si el usuario es encontrado, crear una instancia de nuestro Custom UserDetails utilizando los datos del
+        // usuario
         if (user != null) {
-            CustomUserDetails customUserDetails = new CustomUserDetails(
+
+            return new SuperCustomerUserDetails(
                     user.getEmail(),
                     user.getPassword(),
                     user.getName(),
-                    mapRolesToAuthorities(user.getRoles())
+                    mapRolesToAuthorities(user.getRoles()),
+                    user.getEdad(),
+                    user.getEmail(),
+                    //Utiliza Math.toIntExact para obtener el entero, ya que habíamos creado el user como Float
+                    Math.toIntExact(user.getId())
                     );
-            return customUserDetails;
-
+/*
+            return new CustomUserDetails(
+                    user.getEmail(),
+                    user.getPassword(),
+                    user.getName(),
+                    mapRolesToAuthorities(user.getRoles()),
+                    user.getEdad()
+            );
+  */
         }else{
             // Si el usuario no es encontrado, lanzar una excepción UsernameNotFoundException
             throw new UsernameNotFoundException("Invalid username or password.");

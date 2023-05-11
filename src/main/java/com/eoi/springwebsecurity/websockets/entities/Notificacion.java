@@ -1,11 +1,13 @@
 package com.eoi.springwebsecurity.websockets.entities;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.GenericGenerator;
 
 import java.time.LocalDateTime;
 
@@ -17,9 +19,11 @@ import java.time.LocalDateTime;
 public class Notificacion {
 
     @Id
-    private Long id;
-    private String to;
-    private String from;
+    @GeneratedValue(generator = "uuid")
+    @GenericGenerator(name = "uuid", strategy = "uuid2")
+    private String id;
+    private String userTo;
+    private String userFrom;
     private LocalDateTime fecha;
     private String estado;
     private String mensaje;

@@ -4,8 +4,8 @@ import com.eoi.springwebsecurity.coreapp.dto.UserDto;
 import com.eoi.springwebsecurity.coreapp.services.DefaultService;
 import com.eoi.springwebsecurity.security.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.AuthorizationServiceException;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -88,8 +88,10 @@ public class MainController {
     }
 
 
+    //Queremos que a esta pagina solo accedan los usuarios cuando el ID Es el de su propio usuario
     @GetMapping("/test/{id}")
-    public String test(@PathVariable("id") Integer id, Principal principal, Model model){
+    @PreAuthorize("authentication.principal.userID == #id")
+    public String test(@PathVariable("id") Integer id, Principal principal, Model model, Authentication authentication){
 
         String userID = principal.getName();
         model.addAttribute("user", userService.findUserByEmail(userID));
@@ -104,6 +106,13 @@ public class MainController {
         model.addAttribute("authorization", authorization);
         return "security";
     }
+
+
+
+
+
+
+
 
 
 

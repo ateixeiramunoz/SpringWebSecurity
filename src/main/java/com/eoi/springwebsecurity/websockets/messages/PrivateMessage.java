@@ -1,9 +1,17 @@
 package com.eoi.springwebsecurity.websockets.messages;
 
+
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 /**
  * The type Private message.
  */
 public class PrivateMessage {
+
+    private String notificationID;
 
     private String text;
 

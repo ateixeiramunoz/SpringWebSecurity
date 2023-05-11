@@ -1,11 +1,9 @@
 package com.eoi.springwebsecurity;
 
-import com.eoi.springwebsecurity.coreapp.entities.User;
 import com.eoi.springwebsecurity.coreapp.repositories.UserRepository;
 import com.eoi.springwebsecurity.filemanagement.services.FileSystemStorageService;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

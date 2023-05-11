@@ -18,14 +18,14 @@ public class ControladorScheduling {
     @Autowired
     SchedulingService schedulingService;
 
-    @GetMapping("/cita")
+    @GetMapping("/scheduling")
     public String crearCita(Model model)
         {
             model.addAttribute("cita", new Cita());
             return "/scheduling/cita";
         }
 
-    @PostMapping("/cita/programar")
+    @PostMapping("/scheduling/programar")
     public String programarCita(@ModelAttribute Cita cita)
     {
         log.error("Se ha recibido la programacion de una cita");
