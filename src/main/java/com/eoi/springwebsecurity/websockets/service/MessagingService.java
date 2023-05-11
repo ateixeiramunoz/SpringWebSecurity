@@ -1,7 +1,7 @@
 package com.eoi.springwebsecurity.websockets.service;
 
-import com.eoi.springwebsecurity.websockets.entities.Notificacion;
-import com.eoi.springwebsecurity.websockets.entities.NotificacionRepository;
+import com.eoi.springwebsecurity.notificaciones.Notificacion;
+import com.eoi.springwebsecurity.notificaciones.repository.NotificacionRepository;
 import com.eoi.springwebsecurity.websockets.messages.PrivateMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

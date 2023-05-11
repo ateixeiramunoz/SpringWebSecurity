@@ -1,7 +1,7 @@
 package com.eoi.springwebsecurity.websockets.controllers;
 
-import com.eoi.springwebsecurity.websockets.entities.Notificacion;
-import com.eoi.springwebsecurity.websockets.entities.NotificacionRepository;
+import com.eoi.springwebsecurity.notificaciones.Notificacion;
+import com.eoi.springwebsecurity.notificaciones.repository.NotificacionRepository;
 import com.eoi.springwebsecurity.websockets.messages.PrivateMessage;
 import com.eoi.springwebsecurity.websockets.service.MessagingService;
 import lombok.extern.log4j.Log4j2;
@@ -15,7 +15,6 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
 
-import java.security.Principal;
 import java.util.Optional;
 
 
@@ -51,22 +50,21 @@ public class STOMPMessageController {
     @MessageMapping("/private")
     public void sendToSpecificUser(@Payload PrivateMessage message) {
 
-
         //Creo mi notificación en la base de datos para poder controlar el estado de los mensajes
         Notificacion notificacion = messagingService.crearNotificacion(message);
+        //Cuando ya tenemos el ID de la notificación, lo informamos en nuestro objeto PrivateMessage creado ad-hoc
+        message.setNotificationID(notificacion.getId());
 
-
-
-
+        //Componemos un nuevo mensaje STOMP con nuestro PrivateMessage
         simpMessagingTemplate.convertAndSendToUser(
                 message.getTo(),
                 "/specific",
-                message.getText(),
-                createHeaders(message.getTo(), String.valueOf(notificacion.getId()))
+                message,
+                createHeaders(message.getTo(),
+                        String.valueOf(notificacion.getId()))
         );
 
     }
-
 
 
     private MessageHeaders createHeaders(String recipient, String notificationID) {
@@ -79,12 +77,16 @@ public class STOMPMessageController {
     @MessageMapping("/recibir")
     public void receiveMessage(@Payload PrivateMessage message)
     {
-        String notificationId = "";
-        Optional<Notificacion>notificacion;
+        log.info("MARCANDO MENSAJE COMO RECIBIDO");
+        String notificationId = message.getNotificationID();
+
+        Optional<Notificacion> notificacion;
         notificacion = notificacionRepository.findById(notificationId);
+
         if(notificacion.isPresent())
         {
             notificacion.get().setEstado("READ");
+            log.info("MARCANDO NOTIFICACION COMO RECIBIDA");
             notificacionRepository.save(notificacion.get());
         }
     }

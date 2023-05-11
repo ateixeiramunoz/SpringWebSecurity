@@ -9,19 +9,16 @@ console.log("Clickers");
    $("#disconnect").on( "click",disconnect);
    $("#sendPrivate").on( "click",sendPrivate);
 
-});
 
+});
 
 
 // Función que actualiza la interfaz de usuario para reflejar el estado de conexión
 function setConnected(connected) {
-
     // Deshabilita el botón "Conectar" si ya está conectado
     $("#connect").attr("disabled", connected);
-
     // Deshabilita el botón "Desconectar" si no está conectado
     $("#disconnect").attr("disabled", !connected);
-
     // Muestra la sección "Conversación" si está conectado
     if (connected) {
         $("#conversation").show();
@@ -55,23 +52,22 @@ function connect() {
         // Imprime un mensaje en la consola del navegador
         console.log('Connected: ' + frame);
 
-
         // Se suscribe al canal '/user/specific' para recibir mensajes privados
         stompClient.subscribe('/user/specific', function (message) {
+
+            stompClient.send('/app/recibir', {}, JSON.stringify({ notificationID: JSON.parse(message.body).notificationID }));
             // Muestra el mensaje privado en la interfaz de usuario
             showPrivate(JSON.parse(message.body).text, JSON.parse(message.body).from );
+
+
         });
 
-        function onMessageReceived(message) {
-          // Manejar mensaje recibido del servidor
-          // Enviar confirmación de lectur
-          const messageId = message.headers['message-id'];
-          client.send('/message-received', {}, JSON.stringify({ messageId: messageId }));
-        }
+
 
     });
 
 }
+
 
 
 // Función que desconecta del servidor STOMP
@@ -120,16 +116,8 @@ function disconnect() {
 
 
 
- //Función que muestra un mensaje de tipo saludo
- function showGreeting(message) {
-     // Agrega una fila a la tabla 'greetings' con el mensaje recibido
-     $("#greetings").append("<tr><td>" + message + "</td></tr>");
- }
-
-
 
  //Función que muestra un mensaje privado
-
  function showPrivate(message, from) {
      // Agrega una fila a la tabla 'greetings' con el mensaje privado recibido y el remitente correspondiente
      $("#greetings").append("<tr><td>" + from + " : " + message + "</td></tr>");

@@ -118,7 +118,6 @@ public class SecurityConfig {
                         .requestMatchers("/webjars/**", "/js/**", "/css/**", "/img/**", "/fonts/**", "/favicon.ico").permitAll()
                         .requestMatchers("*css", "*js").permitAll()
                         .requestMatchers("/register/**", "/forgot_password", "/reset_password", "/signup", "/about","/error", "/login").permitAll()
-
                         //Peticiones asociadas a las notificaciones y conexiones websocket
                         .requestMatchers("/gs-guide-websocket/**").permitAll()
 
@@ -129,7 +128,7 @@ public class SecurityConfig {
                                 "/calendarios/**",
                                 "/eventos" +
                                 "/**").permitAll()
-                        // Peticiones permitidas sólo para usuarios con rol ADMIN
+                         //Peticiones permitidas sólo para usuarios con rol ADMIN
                         .requestMatchers("/admin/**").hasAuthority("ADMIN")
                         .requestMatchers("/users").hasAuthority("ADMIN")
 
@@ -138,6 +137,9 @@ public class SecurityConfig {
                                 "/calendarioHTML",
                                 "/chat",
                                 "/videos",
+                                "/numeroNotificaciones",
+                                "/notificaciones",
+                                "/leerNotificacion/**",
                                 "/files/**",
                                 "/upload",
                                 "/test/**",

@@ -1,4 +1,4 @@
-package com.eoi.springwebsecurity.websockets.entities;
+package com.eoi.springwebsecurity.notificaciones;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
