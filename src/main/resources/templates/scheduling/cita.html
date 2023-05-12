@@ -8,7 +8,7 @@
 <div class="container">
     <div class="row">
 
-        <form th:method="POST" th:action="@{/cita/programar}" th:object="${cita}">
+        <form th:method="POST" th:action="@{/scheduling/programar}" th:object="${cita}">
 
             <label for="nombre">Nombre de la cita</label>
             <input class="form-control" id="nombre" name="nombre" type="text">
@@ -44,6 +44,21 @@
             <button class="btn btn-primary" type="submit">CREAR CITA</button>
         </form>
     </div>
+    <table>
+        <thead>
+        <tr>
+            <th>Destinatario</th>
+            <th>Asunto</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="tarea : ${listaTareas}">
+            <td th:text="${tarea.destinatario}"></td>
+            <td th:text="${tarea.asunto}"></td>
+        </tr>
+        </tbody>
+    </table>
+
 </div>
 
 </body>

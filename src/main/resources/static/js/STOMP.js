@@ -1,20 +1,20 @@
 // Declara una variable global que se usará para manejar la conexión a través del protocolo STOMP
 
 var stompClient = null;
-
 $( document ).ready(function() {
-console.log("Clickers");
 
    $("#connect").on( "click",connect);
    $("#disconnect").on( "click",disconnect);
    $("#sendPrivate").on( "click",sendPrivate);
 
 
+    connect();
 });
 
 
 // Función que actualiza la interfaz de usuario para reflejar el estado de conexión
 function setConnected(connected) {
+    console.log("Conectado");
     // Deshabilita el botón "Conectar" si ya está conectado
     $("#connect").attr("disabled", connected);
     // Deshabilita el botón "Desconectar" si no está conectado
@@ -23,12 +23,10 @@ function setConnected(connected) {
     if (connected) {
         $("#conversation").show();
     }
-
     // Oculta la sección "Conversación" si no está conectado
     else {
         $("#conversation").hide();
     }
-
     // Borra los saludos previos en la interfaz de usuario
 
     $("#greetings").html("");
@@ -51,13 +49,16 @@ function connect() {
         $("#connection-status").text("Conectado");
         // Imprime un mensaje en la consola del navegador
         console.log('Connected: ' + frame);
-
         // Se suscribe al canal '/user/specific' para recibir mensajes privados
         stompClient.subscribe('/user/specific', function (message) {
 
             stompClient.send('/app/recibir', {}, JSON.stringify({ notificationID: JSON.parse(message.body).notificationID }));
             // Muestra el mensaje privado en la interfaz de usuario
             showPrivate(JSON.parse(message.body).text, JSON.parse(message.body).from );
+            const toastLiveExample = document.getElementById('liveToast');
+            const toast = new bootstrap.Toast(toastLiveExample);
+            $(".toast-body").text(JSON.parse(message.body).text);
+            toast.show();
 
 
         });
@@ -108,7 +109,6 @@ function disconnect() {
      var from = document.getElementById('userID').value;
      // Utiliza el cliente STOMP para enviar un mensaje a través del canal '/app/private' con el contenido y los destinatarios correspondientes
      stompClient.send("/app/private", {}, JSON.stringify({'text':text, 'to':to, 'from':from}));
-
      // Agrega una fila a la tabla 'greetings' con el mensaje enviado
      $("#greetings").append("<tr><td>YO: " + text + "</td></tr>");
 

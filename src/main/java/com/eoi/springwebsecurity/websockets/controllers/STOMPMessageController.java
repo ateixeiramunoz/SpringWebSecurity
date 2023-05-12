@@ -50,12 +50,12 @@ public class STOMPMessageController {
     @MessageMapping("/private")
     public void sendToSpecificUser(@Payload PrivateMessage message) {
 
-        //Creo mi notificación en la base de datos para poder controlar el estado de los mensajes
+        // Creo mi notificación en la base de datos para poder controlar el estado de los mensajes
         Notificacion notificacion = messagingService.crearNotificacion(message);
-        //Cuando ya tenemos el ID de la notificación, lo informamos en nuestro objeto PrivateMessage creado ad-hoc
+        // Cuando ya tenemos el ID de la notificación, lo informamos en nuestro objeto PrivateMessage creado ad-hoc
         message.setNotificationID(notificacion.getId());
 
-        //Componemos un nuevo mensaje STOMP con nuestro PrivateMessage
+        // Componemos un nuevo mensaje STOMP con nuestro PrivateMessage
         simpMessagingTemplate.convertAndSendToUser(
                 message.getTo(),
                 "/specific",
@@ -63,31 +63,40 @@ public class STOMPMessageController {
                 createHeaders(message.getTo(),
                         String.valueOf(notificacion.getId()))
         );
-
+        log.info("Mensaje enviado a: " + message.getTo());
+        log.info("Notificación creada con ID: " + notificacion.getId());
     }
 
-
+    /**
+     * Crea los encabezados del mensaje con el destinatario y el ID de notificación.
+     *
+     * @param recipient     El destinatario del mensaje.
+     * @param notificationID El ID de la notificación.
+     * @return Los encabezados del mensaje.
+     */
     private MessageHeaders createHeaders(String recipient, String notificationID) {
         SimpMessageHeaderAccessor headerAccessor = SimpMessageHeaderAccessor.create(SimpMessageType.MESSAGE);
-        headerAccessor.addNativeHeader("notificationID",notificationID);
+        headerAccessor.addNativeHeader("notificationID", notificationID);
         return headerAccessor.getMessageHeaders();
     }
 
-
+    /**
+     * Maneja la recepción de un mensaje privado.
+     *
+     * @param message El mensaje privado recibido.
+     */
     @MessageMapping("/recibir")
-    public void receiveMessage(@Payload PrivateMessage message)
-    {
-        log.info("MARCANDO MENSAJE COMO RECIBIDO");
+    public void receiveMessage(@Payload PrivateMessage message) {
         String notificationId = message.getNotificationID();
+        Optional<Notificacion> notificacion = notificacionRepository.findById(notificationId);
 
-        Optional<Notificacion> notificacion;
-        notificacion = notificacionRepository.findById(notificationId);
-
-        if(notificacion.isPresent())
-        {
+        if (notificacion.isPresent()) {
             notificacion.get().setEstado("READ");
-            log.info("MARCANDO NOTIFICACION COMO RECIBIDA");
+            log.info("Notificación {} marcada como recibida", notificationId);
             notificacionRepository.save(notificacion.get());
+        } else {
+            log.error("No se encontró la notificación con ID: {}", notificationId);
         }
     }
+
 }

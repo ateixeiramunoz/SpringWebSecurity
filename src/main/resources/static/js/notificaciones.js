@@ -2,5 +2,10 @@
          $.get( "/numeroNotificaciones", function( data ) {
                 $("#numeronotifbadge").text(data)
          });
+
+
+
     });
+
+
 

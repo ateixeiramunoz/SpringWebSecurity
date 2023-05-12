@@ -31,7 +31,6 @@ public class CalendarioHTMLController {
 
         int firstDayOfWeek=0;
 
-
         int numeroColumnas = 7;
         int mes=1;
         int agno=2023;
