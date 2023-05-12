@@ -150,7 +150,8 @@ public class SecurityConfig {
                                 "/uploadUserFileToFileSystem",
                                 "/uploadToFileSystem",
                                 "/uploadToDatabase",
-                                "/scheduling/**").authenticated()
+                                "/scheduling/**",
+                                "/scheduling/programar").authenticated()
 
                         //Aceptar a todos los usuarios para stream de videos
                         .requestMatchers("/stream/**").authenticated()

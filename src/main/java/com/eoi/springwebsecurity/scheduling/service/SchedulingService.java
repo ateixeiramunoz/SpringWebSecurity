@@ -6,18 +6,26 @@ import com.eoi.springwebsecurity.scheduling.entities.Cita;
 import com.eoi.springwebsecurity.scheduling.modelos.EmailAsincrono;
 import com.eoi.springwebsecurity.scheduling.modelos.NotificacionAsincrona;
 import com.eoi.springwebsecurity.scheduling.repository.CitaRepository;
+import com.eoi.springwebsecurity.websockets.service.MessagingService;
 import jakarta.validation.constraints.Email;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
+import org.springframework.scheduling.config.ScheduledTask;
 import org.springframework.scheduling.support.CronTrigger;
 import org.springframework.scheduling.support.PeriodicTrigger;
+import org.springframework.scheduling.support.ScheduledMethodRunnable;
 import org.springframework.stereotype.Component;
 
 import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
 
@@ -37,6 +45,8 @@ public class SchedulingService {
     private CitaRepository citaRepository;
     @Autowired
     EmailService emailService;
+    @Autowired
+    MessagingService messagingService;
 
     /**
      * Este metodo crea una cita para un cliente en BD.
@@ -47,6 +57,7 @@ public class SchedulingService {
      */
     public Cita crearCita(Cita cita) {
         //TODO - CAMBIAR PARA QUE COJA EL USUARIO REAL
+
         cita.setUsuario(userRepository.findById(1L).get());
         Cita citaSaved = citaRepository.save(cita);
 
@@ -55,7 +66,7 @@ public class SchedulingService {
         }
 
         if (Boolean.TRUE.equals(citaSaved.getEnviarEmail())) {
-            crearAvisoMail(citaSaved);
+          //  crearAvisoMail(citaSaved);
         }
 
         return citaSaved;
@@ -120,16 +131,30 @@ public class SchedulingService {
         periodicTrigger.setInitialDelay(duracionEspera);
 
         threadPoolTaskScheduler.schedule(
-                new NotificacionAsincrona(simpMessagingTemplate,
+                new NotificacionAsincrona(simpMessagingTemplate, messagingService,
                         "Tarea repetitiva con PeriodicTrigger",
                         "mail.alejandro.teixeira@gmail.com",
                         "mail.alejandro.teixeira@gmail.com"),
                 periodicTrigger
         );
-
-
-
     }
+
+
+
+    public List<Runnable> listarTareas() {
+        // Obtén la cola de tareas programadas
+        BlockingQueue<Runnable> colaTareasProgramadas = threadPoolTaskScheduler.getScheduledThreadPoolExecutor().getQueue();
+
+        List<Runnable> tareasProgramadas = new ArrayList<>();
+
+        // Recorre la cola de tareas programadas
+        for (Runnable tarea : colaTareasProgramadas) {
+            tareasProgramadas.add(tarea);
+        }
+
+        return tareasProgramadas;
+    }
+
 
 
     public void crearAvisoMail(Cita cita) {
