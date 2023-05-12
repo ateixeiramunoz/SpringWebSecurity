@@ -8,6 +8,9 @@ import lombok.Setter;
 
 import java.util.Date;
 
+/**
+ * The type Tarea tipo thread.
+ */
 @Getter
 @Setter
 @NoArgsConstructor

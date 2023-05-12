@@ -26,6 +26,7 @@ public class LoginController {
      * Login error string.
      *
      * @param model the model
+     *
      * @return the string
      */
 // Login form with error

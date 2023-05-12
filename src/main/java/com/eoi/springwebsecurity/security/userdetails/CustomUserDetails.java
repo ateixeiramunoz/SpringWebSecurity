@@ -35,6 +35,7 @@ public class CustomUserDetails implements UserDetails {
      * @param password    the password
      * @param name        the name
      * @param authorities the authorities
+     * @param edad        the edad
      */
     public CustomUserDetails(String username, String password, String name,
                              Collection<? extends GrantedAuthority> authorities, Integer edad) {

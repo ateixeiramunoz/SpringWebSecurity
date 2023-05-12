@@ -24,6 +24,7 @@ public interface UserService {
      * Find user by email user.
      *
      * @param email the email
+     *
      * @return the user
      */
     User findUserByEmail(String email);
@@ -39,6 +40,7 @@ public interface UserService {
      * Gets by reset password token.
      *
      * @param token the token
+     *
      * @return the by reset password token
      */
     User getByResetPasswordToken(String token);

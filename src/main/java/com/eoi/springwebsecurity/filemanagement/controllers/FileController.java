@@ -55,7 +55,8 @@ public class FileController {
 
     /**
      * Constructor de la clase que recibe el servicio de almacenamiento de archivos como parámetro.
-     * La anotación @Autowired se utiliza para inyectar automáticamente el servicio necesario al crear una instancia de la clase.
+     * La anotación @Autowired se utiliza para inyectar automáticamente el servicio necesario al crear una instancia de
+     * la clase.
      *
      * @param fileSystemStorageService el servicio de almacenamiento de archivos a utilizar
      */
@@ -68,8 +69,11 @@ public class FileController {
     /**
      * Método que se encarga de listar los archivos que han sido subidos al servidor.
      *
-     * @param model el modelo que se va a utilizar para pasar los datos a la vista
+     * @param model          el modelo que se va a utilizar para pasar los datos a la vista
+     * @param authentication the authentication
+     *
      * @return el nombre de la vista a la que se va a redirigir
+     *
      * @throws IOException si ocurre un error al cargar los archivos
      */
     @GetMapping("/files")
@@ -115,7 +119,15 @@ public class FileController {
      * Método que se encarga de descargar un archivo desde el servidor.
      *
      * @param filename el nombre del archivo que se va a descargar
-     * @return una respuesta HTTP con el archivo a descargar en el cuerpo de la respuesta '@GetMapping("/files/{filename:.+}")' es una anotación utilizada en un método dentro de un controlador de Spring MVC que indica que el método manejará solicitudes GET para una URL que incluya una variable de ruta {filename}. El . + en la variable de ruta indica que la variable puede contener un punto y cualquier otro carácter después de él. Esto es necesario porque algunos nombres de archivo pueden contener puntos en su nombre y la expresión regular predeterminada utilizada por Spring no permitiría estos caracteres. Por ejemplo, si la URL solicitada es /files/myfile.txt, la variable de ruta {filename} será igual a myfile.txt. Si la URL solicitada es /files/myfile.pdf, la variable de ruta {filename} también será igual a myfile.pdf.
+     *
+     * @return una respuesta HTTP con el archivo a descargar en el cuerpo de la respuesta
+     * '@GetMapping("/files/{filename:.+}")' es una anotación utilizada en un método dentro de un controlador de Spring
+     * MVC que indica que el método manejará solicitudes GET para una URL que incluya una variable de ruta {filename}.
+     * El . + en la variable de ruta indica que la variable puede contener un punto y cualquier otro carácter después de
+     * él. Esto es necesario porque algunos nombres de archivo pueden contener puntos en su nombre y la expresión
+     * regular predeterminada utilizada por Spring no permitiría estos caracteres. Por ejemplo, si la URL solicitada es
+     * /files/myfile.txt, la variable de ruta {filename} será igual a myfile.txt. Si la URL solicitada es
+     * /files/myfile.pdf, la variable de ruta {filename} también será igual a myfile.pdf.
      */
     @GetMapping("/files/{filename:.+}")
     @ResponseBody
@@ -136,6 +148,7 @@ public class FileController {
      *
      * @param file               el archivo que se va a subir
      * @param redirectAttributes los atributos que se van a utilizar para pasar información entre solicitudes
+     *
      * @return el nombre de la vista a la que se va a redirigir
      */
     @PostMapping("/uploadToFileSystem")
@@ -159,7 +172,9 @@ public class FileController {
      *
      * @param file               el archivo cargado en el formulario
      * @param redirectAttributes objeto utilizado para agregar atributos a la redirección
-     * @param authentication     objeto que representa la información de autenticación del usuario que realiza la solicitud
+     * @param authentication     objeto que representa la información de autenticación del usuario que realiza la
+     *                           solicitud
+     *
      * @return una cadena de texto con la vista redirigida
      */
     @PostMapping("/uploadToDatabase")
@@ -189,6 +204,15 @@ public class FileController {
     }
 
 
+    /**
+     * Upload user file to database store in file system string.
+     *
+     * @param file               the file
+     * @param redirectAttributes the redirect attributes
+     * @param authentication     the authentication
+     *
+     * @return the string
+     */
     @PostMapping("/uploadUserFileToDatabaseStoreInFileSystem")
     public String uploadUserFileToDatabaseStoreInFileSystem(@RequestParam("file") MultipartFile file,
                                            RedirectAttributes redirectAttributes,
@@ -222,14 +246,14 @@ public class FileController {
     }
 
 
-
-
     /**
      * Método que recibe una solicitud POST para cargar un archivo propio de un usuario a la base de datos.
      *
      * @param file               el archivo cargado en el formulario
      * @param redirectAttributes objeto utilizado para agregar atributos a la redirección
-     * @param authentication     objeto que representa la información de autenticación del usuario que realiza la solicitud
+     * @param authentication     objeto que representa la información de autenticación del usuario que realiza la
+     *                           solicitud
+     *
      * @return una cadena de texto con la vista redirigida
      */
     @PostMapping("/uploadUserFileToDatabase")
@@ -264,13 +288,13 @@ public class FileController {
     }
 
 
-
     /**
      * Método que se encarga de manejar la subida de un archivo de usuario al servidor.
      *
      * @param file               el archivo que se va a subir
      * @param redirectAttributes los atributos que se van a utilizar para pasar información entre solicitudes
      * @param authentication     la información de autenticación del usuario que está realizando la solicitud
+     *
      * @return el nombre de la vista a la que se va a redirigir
      */
     @PostMapping("/uploadUserFileToFileSystem")
@@ -303,6 +327,7 @@ public class FileController {
      * Método que se encarga de obtener el archivo de la base de datos con el id proporcionado.
      *
      * @param id El id del archivo a obtener de la base de datos.
+     *
      * @return ResponseEntity con el archivo obtenido y las cabeceras necesarias para la descarga del archivo.
      */
     @GetMapping("/databasefiles/{id}")
@@ -321,6 +346,7 @@ public class FileController {
      * Método que elimina un archivo de la base de datos a través de su identificador.
      *
      * @param id El identificador del archivo a eliminar.
+     *
      * @return La página de archivos después de eliminar el archivo.
      */
     @GetMapping("/databasefiles/delete/{id}")
@@ -330,12 +356,27 @@ public class FileController {
     }
 
 
+    /**
+     * Delete file from file system string.
+     *
+     * @param fileName the file name
+     *
+     * @return the string
+     */
     @GetMapping("/files/delete/{fileName}")
     public String deleteFileFromFileSystem(@PathVariable String fileName) {
         fileSystemStorageService.deleteFile(fileName);
         return "redirect:/files";
     }
 
+    /**
+     * Delete file from file system string.
+     *
+     * @param id             the id
+     * @param authentication the authentication
+     *
+     * @return the string
+     */
     @GetMapping("/databasefiles/desasociarUserFile/{id}")
     public String deleteFileFromFileSystem(@PathVariable String id, Authentication authentication) {
         // Obtenemos el nombre de usuario del usuario autenticado.
@@ -348,16 +389,12 @@ public class FileController {
     }
 
 
-
-
-
-
-
     /**
      * Controlador de excepción para la excepción FileNotFoundException.
      * Retorna una respuesta con un estado HTTP 404 (no encontrado).
      *
      * @param exc la excepción FileNotFoundException que se ha producido
+     *
      * @return ResponseEntity con un estado HTTP 404 (no encontrado)
      */
     @ExceptionHandler(FileNotFoundException.class)

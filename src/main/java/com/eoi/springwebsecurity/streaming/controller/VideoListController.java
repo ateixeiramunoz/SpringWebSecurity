@@ -26,6 +26,7 @@ public class VideoListController {
      * List all videos string.
      *
      * @param model the model
+     *
      * @return the string
      */
     @GetMapping("/videos")

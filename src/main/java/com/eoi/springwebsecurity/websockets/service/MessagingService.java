@@ -15,12 +15,22 @@ import java.time.LocalDateTime;
 // 4.- En el metodo callback de la recepción, enviaremos el ID Del mensaje para indicar que se ha recibido.
 // 5.- Desde el servidor, al recibir la confirmación de dicho mensaje, marcaremos la notificación a recibida.
 
+/**
+ * The type Messaging service.
+ */
 @Service
 public class MessagingService {
 
     @Autowired
     private NotificacionRepository notificacionRepository;
 
+    /**
+     * Crear notificacion notificacion.
+     *
+     * @param message the message
+     *
+     * @return the notificacion
+     */
     public Notificacion crearNotificacion (PrivateMessage message) {
 
         Notificacion notificacion = new Notificacion();
@@ -35,6 +45,11 @@ public class MessagingService {
 
     }
 
+    /**
+     * Enviar mensaje stomp.
+     *
+     * @param message the message
+     */
     public void EnviarMensajeSTOMP(PrivateMessage message)
     {
 

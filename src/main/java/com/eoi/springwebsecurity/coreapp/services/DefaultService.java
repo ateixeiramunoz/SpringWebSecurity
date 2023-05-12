@@ -7,13 +7,26 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 
+/**
+ * The type Default service.
+ */
 @Service
 public class DefaultService {
 
+    /**
+     * The User repository.
+     */
     @Autowired
     UserRepository userRepository;
 
 
+    /**
+     * Gets user id from calendario id.
+     *
+     * @param i the
+     *
+     * @return the user id from calendario id
+     */
     public String getUserIdFromCalendarioID(Integer i)
     {
 

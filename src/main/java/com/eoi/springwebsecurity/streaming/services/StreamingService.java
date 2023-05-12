@@ -12,6 +12,7 @@ public interface StreamingService {
      * Gets video.
      *
      * @param title the title
+     *
      * @return the video
      */
     Mono<Resource> getVideo(String title);

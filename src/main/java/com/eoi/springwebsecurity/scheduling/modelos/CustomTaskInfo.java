@@ -7,6 +7,9 @@ import lombok.Setter;
 
 import java.time.LocalDateTime;
 
+/**
+ * The type Custom task info.
+ */
 @Getter
 @Setter
 @NoArgsConstructor

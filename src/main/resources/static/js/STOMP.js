@@ -60,7 +60,6 @@ function connect() {
             $(".toast-body").text(JSON.parse(message.body).text);
             toast.show();
 
-
         });
 
 

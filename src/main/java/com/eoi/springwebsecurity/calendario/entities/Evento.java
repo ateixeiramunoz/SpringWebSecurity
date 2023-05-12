@@ -10,6 +10,9 @@ import lombok.Setter;
 import java.time.LocalDateTime;
 import java.util.List;
 
+/**
+ * The type Evento.
+ */
 @Entity
 @Getter
 @Setter

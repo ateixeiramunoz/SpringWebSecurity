@@ -124,6 +124,7 @@ public class SecurityConfig {
                         //Peticiones asociadas al calendario
                         .requestMatchers("/paginacion",
                                 "/filtrado",
+                                "/estructura/**",
                                 "/calendario/**",
                                 "/calendarios/**",
                                 "/eventos" +

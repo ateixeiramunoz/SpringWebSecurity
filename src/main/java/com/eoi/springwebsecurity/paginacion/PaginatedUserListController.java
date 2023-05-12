@@ -14,6 +14,9 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+/**
+ * The type Paginated user list controller.
+ */
 @Controller
 public class PaginatedUserListController {
 
@@ -26,6 +29,15 @@ public class PaginatedUserListController {
     @Autowired
     private UserPagingRepository userPagingRepository;
 
+    /**
+     * Find all users string.
+     *
+     * @param model the model
+     * @param page  the page
+     * @param size  the size
+     *
+     * @return the string
+     */
     @GetMapping("/paginacion")
     public String findAllUsers(Model model,
                                @RequestParam("page") Optional<Integer> page,

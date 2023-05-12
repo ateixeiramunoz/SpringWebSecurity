@@ -26,9 +26,15 @@ public class SpringWebSecurityApplication {
     @Autowired
     FileSystemStorageService fileSystemStorageService;
 
+    /**
+     * The Thread pool task scheduler.
+     */
     @Autowired
     ThreadPoolTaskScheduler threadPoolTaskScheduler;
 
+    /**
+     * The Simp messaging template.
+     */
     @Autowired
     SimpMessagingTemplate simpMessagingTemplate;
     @Autowired

@@ -33,6 +33,7 @@ public class MainController {
      * Index string.
      *
      * @param principal the principal
+     *
      * @return the string
      */
     @GetMapping("/")
@@ -64,6 +65,7 @@ public class MainController {
      * Users string.
      *
      * @param model the model
+     *
      * @return the string
      */
     @GetMapping("/users")
@@ -75,6 +77,9 @@ public class MainController {
 
     /**
      * Chat string.
+     *
+     * @param principal the principal
+     * @param model     the model
      *
      * @return the string
      */
@@ -88,7 +93,17 @@ public class MainController {
     }
 
 
-    //Queremos que a esta pagina solo accedan los usuarios cuando el ID Es el de su propio usuario
+    /**
+     * Test string.
+     *
+     * @param id             the id
+     * @param principal      the principal
+     * @param model          the model
+     * @param authentication the authentication
+     *
+     * @return the string
+     */
+//Queremos que a esta pagina solo accedan los usuarios cuando el ID Es el de su propio usuario
     @GetMapping("/test/{id}")
     @PreAuthorize("authentication.principal.userID == #id")
     public String test(@PathVariable("id") Integer id, Principal principal, Model model, Authentication authentication){
@@ -100,12 +115,34 @@ public class MainController {
     }
 
 
+    /**
+     * Test string.
+     *
+     * @param principal     the principal
+     * @param authorization the authorization
+     * @param model         the model
+     *
+     * @return the string
+     */
     @GetMapping("/security")
     public String test(Principal principal, Authorization authorization,Model model){
         model.addAttribute("principal", principal);
         model.addAttribute("authorization", authorization);
         return "security";
     }
+
+
+    /**
+     * Estructura string.
+     *
+     * @return the string
+     */
+    @GetMapping("/estructura")
+    public String estructura(){
+        return "estructura";
+    }
+
+
 
 
 

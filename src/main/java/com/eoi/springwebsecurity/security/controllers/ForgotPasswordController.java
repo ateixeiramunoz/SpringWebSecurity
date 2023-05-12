@@ -44,6 +44,7 @@ public class ForgotPasswordController {
      *
      * @param request the request
      * @param model   the model
+     *
      * @return the string
      */
     @PostMapping("/forgot_password")
@@ -71,6 +72,7 @@ public class ForgotPasswordController {
      *
      * @param recipientEmail the recipient email
      * @param link           the link
+     *
      * @throws MessagingException           the messaging exception
      * @throws UnsupportedEncodingException the unsupported encoding exception
      */
@@ -101,6 +103,7 @@ public class ForgotPasswordController {
      *
      * @param token the token
      * @param model the model
+     *
      * @return the string
      */
     @GetMapping("/reset_password")
@@ -121,6 +124,7 @@ public class ForgotPasswordController {
      *
      * @param request the request
      * @param model   the model
+     *
      * @return the string
      */
     @PostMapping("/reset_password")

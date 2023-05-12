@@ -11,6 +11,9 @@ import org.hibernate.annotations.GenericGenerator;
 
 import java.time.LocalDateTime;
 
+/**
+ * The type Notificacion.
+ */
 @Entity
 @Getter
 @Setter

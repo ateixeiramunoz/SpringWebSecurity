@@ -29,31 +29,49 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
 
+/**
+ * The type Scheduling service.
+ */
 @Component
 @Log4j2
 public class SchedulingService {
 
 
     private static final SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
+    /**
+     * The Thread pool task scheduler.
+     */
     @Autowired
     ThreadPoolTaskScheduler threadPoolTaskScheduler;
+    /**
+     * The Simp messaging template.
+     */
     @Autowired
     SimpMessagingTemplate simpMessagingTemplate;
+    /**
+     * The User repository.
+     */
     @Autowired
     UserRepository userRepository;
     @Autowired
     private CitaRepository citaRepository;
+    /**
+     * The Email service.
+     */
     @Autowired
     EmailService emailService;
+    /**
+     * The Messaging service.
+     */
     @Autowired
     MessagingService messagingService;
 
     /**
      * Este metodo crea una cita para un cliente en BD.
      *
-     * @param cita
+     * @param cita the cita
      *
-     * @return
+     * @return cita
      */
     public Cita crearCita(Cita cita) {
         //TODO - CAMBIAR PARA QUE COJA EL USUARIO REAL
@@ -107,6 +125,11 @@ public class SchedulingService {
 */
 
 
+    /**
+     * Crear aviso.
+     *
+     * @param cita the cita
+     */
     public void crearAviso(Cita cita)
     {
         LocalDateTime fechaAviso =
@@ -124,23 +147,27 @@ public class SchedulingService {
         Duration duracionEspera = Duration.between(fechaActual, fechaAviso);
 
         //Creo un temporizador a partir de la hora actual
-        PeriodicTrigger periodicTrigger = new PeriodicTrigger( 1L, TimeUnit.MINUTES);
+        //PeriodicTrigger periodicTrigger = new PeriodicTrigger( 1L, TimeUnit.MINUTES);
 
         //Aplicamos el delay de inicio igual al tiempo que hay de diferencia entre la primera notificacion y la fecha
         // actual
-        periodicTrigger.setInitialDelay(duracionEspera);
+        //periodicTrigger.setInitialDelay(duracionEspera);
 
-        threadPoolTaskScheduler.schedule(
-                new NotificacionAsincrona(simpMessagingTemplate, messagingService,
-                        "Tarea repetitiva con PeriodicTrigger",
-                        "mail.alejandro.teixeira@gmail.com",
-                        "mail.alejandro.teixeira@gmail.com"),
-                periodicTrigger
-        );
+        //threadPoolTaskScheduler.schedule(
+          //      new NotificacionAsincrona(simpMessagingTemplate, messagingService,
+            //            "Tarea repetitiva con PeriodicTrigger",
+              //          "mail.alejandro.teixeira@gmail.com",
+                //        "mail.alejandro.teixeira@gmail.com"),
+                //periodicTrigger
+        //);
     }
 
 
-
+    /**
+     * Listar tareas list.
+     *
+     * @return the list
+     */
     public List<Runnable> listarTareas() {
         // Obtén la cola de tareas programadas
         BlockingQueue<Runnable> colaTareasProgramadas = threadPoolTaskScheduler.getScheduledThreadPoolExecutor().getQueue();
@@ -156,7 +183,11 @@ public class SchedulingService {
     }
 
 
-
+    /**
+     * Crear aviso mail.
+     *
+     * @param cita the cita
+     */
     public void crearAvisoMail(Cita cita) {
 
         String expresionCron = "";

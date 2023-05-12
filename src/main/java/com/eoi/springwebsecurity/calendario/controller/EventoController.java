@@ -14,6 +14,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+/**
+ * The type Evento controller.
+ */
 @Controller
 @RequestMapping("/eventos")
 public class EventoController {
@@ -27,6 +30,13 @@ public class EventoController {
     @Autowired
     private UserRepository userRepository;
 
+    /**
+     * Mostrar formulario creacion string.
+     *
+     * @param model the model
+     *
+     * @return the string
+     */
     @GetMapping("/crear")
     public String mostrarFormularioCreacion(Model model) {
         Evento evento = new Evento();
@@ -36,6 +46,14 @@ public class EventoController {
         return "evento/formulario";
     }
 
+    /**
+     * Guardar evento string.
+     *
+     * @param evento the evento
+     * @param model  the model
+     *
+     * @return the string
+     */
     @PostMapping(value={"","/"})
     public String guardarEvento(@ModelAttribute("evento") Evento evento,Model model) {
         eventoRepository.save(evento);

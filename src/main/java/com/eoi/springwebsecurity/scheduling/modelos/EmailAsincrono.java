@@ -15,6 +15,9 @@ import org.springframework.stereotype.Component;
 import java.io.UnsupportedEncodingException;
 
 
+/**
+ * The type Email asincrono.
+ */
 @Component
 @Getter
 @Setter

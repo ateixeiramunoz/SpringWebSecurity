@@ -15,6 +15,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * The type Calendario html controller.
+ */
 @Controller
 @Log4j2
 public class CalendarioHTMLController {
@@ -22,6 +25,16 @@ public class CalendarioHTMLController {
 
     //https://stackoverflow.com/questions/36747620/conditionally-closing-tag-in-thymeleaf
 
+    /**
+     * Gets calendario html.
+     *
+     * @param model the model
+     * @param day   the day
+     * @param month the month
+     * @param year  the year
+     *
+     * @return the calendario html
+     */
     @GetMapping("/calendarioHTML")
     public String getCalendarioHTML(Model model,
                                     @RequestParam("day") Optional<Integer> day,

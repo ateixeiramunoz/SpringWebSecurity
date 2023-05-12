@@ -8,6 +8,9 @@ import lombok.Setter;
 
 import java.util.List;
 
+/**
+ * The type Tipo de evento.
+ */
 @Entity
 @Getter
 @Setter
@@ -20,6 +23,9 @@ public class TipoDeEvento {
     private Integer id;
     private String nombre;
 
+    /**
+     * The Eventos.
+     */
     @OneToMany
     List<Evento> eventos;
 

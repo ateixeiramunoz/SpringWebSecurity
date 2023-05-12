@@ -5,6 +5,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
+/**
+ * The type Email service.
+ */
 @Service
 @Log4j2
 public class EmailService {
@@ -28,6 +31,13 @@ public class EmailService {
         mailSender.send(message);
     }*/
 
+    /**
+     * Send email.
+     *
+     * @param recipientEmail the recipient email
+     * @param link           the link
+     * @param cuerpoMensaje  the cuerpo mensaje
+     */
     public void sendEmail(String recipientEmail, String link, String cuerpoMensaje)
     {
         log.info("HEMOS ENVIADO EL MAIL PERO NJO FUNCIONA EL ENVIO!!");

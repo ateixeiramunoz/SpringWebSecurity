@@ -22,6 +22,7 @@ public class FileUploadExceptionAdvice extends ResponseEntityExceptionHandler {
      * Maneja la excepción de tamaño máximo de archivo excedido.
      *
      * @param exc Excepción MaxUploadSizeExceededException.
+     *
      * @return ResponseEntity con un mensaje de error.
      */
     @ExceptionHandler(MaxUploadSizeExceededException.class)
