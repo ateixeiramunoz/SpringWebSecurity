@@ -6,6 +6,7 @@ import com.eoi.springwebsecurity.filemanagement.models.FileInfo;
 import com.eoi.springwebsecurity.filemanagement.services.DBFileStorageService;
 import com.eoi.springwebsecurity.filemanagement.services.FileSystemStorageService;
 import com.eoi.springwebsecurity.security.service.UserService;
+import com.eoi.springwebsecurity.websockets.service.MessagingService;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -21,6 +22,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.security.Principal;
 import java.util.List;
 
 /**
@@ -40,6 +42,9 @@ public class FileController {
      */
     @Autowired
     private FileSystemStorageService fileSystemStorageService;
+
+    @Autowired
+    private MessagingService messagingService;
 
     /**
      * Servicio de almacenamiento de archivos en la base de datos utilizado por el controlador.
@@ -153,10 +158,14 @@ public class FileController {
      */
     @PostMapping("/uploadToFileSystem")
     public String handleFileUpload(@RequestParam("file") MultipartFile file,
-                                   RedirectAttributes redirectAttributes) {
+                                   RedirectAttributes redirectAttributes, Principal principal) {
 
         // Guardamos el archivo en el servicio de almacenamiento predeterminado.
         fileSystemStorageService.save(file);
+
+
+        messagingService.crearMensajeYNotificacionDeAdminCuandoOcurreAlgoYEnviarElMensaje("Se ha subido un fichero",
+                principal.getName());
 
         // Agregamos un mensaje de éxito a los atributos de redirección.
         redirectAttributes.addFlashAttribute("message",

@@ -50,11 +50,16 @@ function connect() {
         // Imprime un mensaje en la consola del navegador
         console.log('Connected: ' + frame);
         // Se suscribe al canal '/user/specific' para recibir mensajes privados
+
+
+
         stompClient.subscribe('/user/specific', function (message) {
 
             stompClient.send('/app/recibir', {}, JSON.stringify({ notificationID: JSON.parse(message.body).notificationID }));
+
             // Muestra el mensaje privado en la interfaz de usuario
             showPrivate(JSON.parse(message.body).text, JSON.parse(message.body).from );
+
             const toastLiveExample = document.getElementById('liveToast');
             const toast = new bootstrap.Toast(toastLiveExample);
             $(".toast-body").text(JSON.parse(message.body).text);
