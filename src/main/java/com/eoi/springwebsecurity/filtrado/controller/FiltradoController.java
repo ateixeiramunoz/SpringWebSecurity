@@ -14,11 +14,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-
-
+/**
+ * The type Filtrado controller.
+ */
 @Controller
 public class FiltradoController {
 
+    /**
+     * Filtrado string.
+     *
+     * @param principal     the principal
+     * @param authorization the authorization
+     * @param model         the model
+     *
+     * @return the string
+     */
     @GetMapping("/filtrado")
     public String filtrado(Principal principal, Authorization authorization, Model model){
 
@@ -42,7 +52,15 @@ public class FiltradoController {
         return "filtrado/index";
     }
 
-    //https://docs.spring.io/spring-framework/docs/current/reference/html/core.html#expressions-collection-selection
+    /**
+     * Filtrado string.
+     *
+     * @param model          the model
+     * @param searchFormData the search form data
+     *
+     * @return the string
+     */
+//https://docs.spring.io/spring-framework/docs/current/reference/html/core.html#expressions-collection-selection
     @PostMapping("/filtrado")
     public String filtrado(Model model, @ModelAttribute("searchFormData") SearchFormData searchFormData){
         List<User> listaDatos = new ArrayList<>();

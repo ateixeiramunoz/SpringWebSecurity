@@ -21,7 +21,8 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 
 /**
- * Clase que implementa la interfaz StorageService y proporciona métodos para la gestión de archivos en un directorio de almacenamiento.
+ * Clase que implementa la interfaz StorageService y proporciona métodos para la gestión de archivos en un directorio de
+ * almacenamiento.
  */
 @Service
 @Log4j2

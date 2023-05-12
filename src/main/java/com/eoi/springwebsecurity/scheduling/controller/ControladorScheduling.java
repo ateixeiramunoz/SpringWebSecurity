@@ -27,27 +27,45 @@ import java.util.concurrent.FutureTask;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * The type Controlador scheduling.
+ */
 @Controller
 @Log4j2
 public class ControladorScheduling {
 
 
+    /**
+     * The Scheduling service.
+     */
     @Autowired
     SchedulingService schedulingService;
+    /**
+     * The Thread pool task scheduler.
+     */
     @Autowired
     ThreadPoolTaskScheduler threadPoolTaskScheduler;
 
+    /**
+     * Listar tareas string.
+     *
+     * @param model the model
+     *
+     * @return the string
+     */
     @GetMapping("/scheduling")
     public String listarTareas(Model model) {
         BlockingQueue<Runnable> colaTareasProgramadas = threadPoolTaskScheduler.getScheduledThreadPoolExecutor().getQueue();
         List<CustomTaskInfo> listaTareas = new ArrayList<>();
+
+
 
         for (Runnable tarea : colaTareasProgramadas) {
             if (tarea instanceof FutureTask) {
                 // Obtén la información de la tarea programada según tus necesidades
                 // Por ejemplo, puedes obtener el destinatario, asunto, etc.
 
-
+                //((FutureTask<?>) tarea).cancel();
                 // Crea un objeto CustomTaskInfo con la información relevante
                 CustomTaskInfo customTaskInfo = new CustomTaskInfo(false,
                         10L,
@@ -62,6 +80,13 @@ public class ControladorScheduling {
         return "/scheduling/cita";
     }
 
+    /**
+     * Programar cita string.
+     *
+     * @param cita the cita
+     *
+     * @return the string
+     */
     @PostMapping("/scheduling/programar")
     public String programarCita(@ModelAttribute Cita cita)
     {

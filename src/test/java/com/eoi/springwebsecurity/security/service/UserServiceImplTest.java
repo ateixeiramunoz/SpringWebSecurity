@@ -24,6 +24,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+/**
+ * The type User service impl test.
+ */
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @ContextConfiguration(classes = { SecurityConfig.class })
@@ -45,6 +48,9 @@ class UserServiceImplTest {
     private BCryptPasswordEncoder passwordEncoder;
 
 
+    /**
+     * Save user test.
+     */
     @Test
     void saveUserTest() {
         // Given

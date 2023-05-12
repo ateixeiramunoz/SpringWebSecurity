@@ -21,10 +21,16 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+/**
+ * The type Notificaciones controller.
+ */
 @Log4j2
 @Controller
 public class NotificacionesController {
 
+    /**
+     * The Notificacion repository.
+     */
     @Autowired
     NotificacionRepository notificacionRepository;
 
@@ -32,6 +38,7 @@ public class NotificacionesController {
      * Obtiene el número de notificaciones pendientes para el usuario actual.
      *
      * @param principal El objeto principal que representa al usuario actual.
+     *
      * @return El número de notificaciones pendientes en formato de texto.
      */
     @GetMapping("/numeroNotificaciones")
@@ -51,6 +58,11 @@ public class NotificacionesController {
      *
      * @param principal El objeto principal que representa al usuario actual.
      * @param model     El modelo utilizado para pasar los datos a la vista.
+     * @param page      the page
+     * @param size      the size
+     * @param queryFrom the query from
+     * @param queryTo   the query to
+     *
      * @return La vista que muestra la lista de notificaciones pendientes.
      */
     @PreAuthorize("hasAuthority('ADMIN')")
@@ -95,6 +107,10 @@ public class NotificacionesController {
      *
      * @param principal El objeto principal que representa al usuario actual.
      * @param model     El modelo utilizado para pasar los datos a la vista.
+     * @param page      the page
+     * @param size      the size
+     * @param name      the name
+     *
      * @return La vista que muestra la lista de notificaciones pendientes.
      */
     @GetMapping("/notificacionesUsuario")
@@ -128,13 +144,12 @@ public class NotificacionesController {
     }
 
 
-
-
     /**
      * Marca todas las notificaciones pendientes como leídas para el usuario actual.
      *
      * @param principal El objeto principal que representa al usuario actual.
      * @param model     El modelo utilizado para pasar los datos a la vista.
+     *
      * @return La vista que muestra la lista de notificaciones pendientes actualizada.
      */
     @GetMapping("/leerNotificaciones")
@@ -161,6 +176,7 @@ public class NotificacionesController {
      * @param id        El ID de la notificación a marcar como leída.
      * @param principal El objeto principal que representa al usuario actual.
      * @param model     El modelo utilizado para pasar los datos a la vista.
+     *
      * @return La redirección a la página de notificaciones.
      */
     @GetMapping("/leerNotificacion/{id}")

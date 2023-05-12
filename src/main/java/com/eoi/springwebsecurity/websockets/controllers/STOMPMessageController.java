@@ -31,8 +31,14 @@ public class STOMPMessageController {
      */
     @Autowired
     SimpMessagingTemplate simpMessagingTemplate;
+    /**
+     * The Messaging service.
+     */
     @Autowired
     MessagingService messagingService;
+    /**
+     * The Notificacion repository.
+     */
     @Autowired
     NotificacionRepository  notificacionRepository;
 
@@ -40,7 +46,7 @@ public class STOMPMessageController {
      * El ID de sesión (también conocido como ID de conexión) se genera automáticamente cuando un cliente se conecta
      * al servidor de Spring WebSocket. Este ID de sesión se utiliza para identificar de manera única la conexión
      * de un cliente y se puede utilizar para enviar mensajes a clientes específicos.
-     *
+     * <p>
      * En Spring WebSocket, el ID de sesión se puede obtener a través del encabezado simpSessionId en un método
      * controlador de mensajes. Este encabezado se agrega automáticamente por Spring WebSocket y contiene
      * el ID de sesión del cliente que envió el mensaje.

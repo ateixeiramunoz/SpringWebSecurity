@@ -4,6 +4,9 @@ package com.eoi.springwebsecurity.websockets.messages;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * The type Private message.
+ */
 @Getter
 @Setter
 /**
@@ -47,14 +50,29 @@ public class PrivateMessage {
     }
 
 
+    /**
+     * Sets text.
+     *
+     * @param text the text
+     */
     public void setText(String text) {
         this.text = text;
     }
 
+    /**
+     * Gets from.
+     *
+     * @return the from
+     */
     public String getFrom() {
         return from;
     }
 
+    /**
+     * Sets from.
+     *
+     * @param from the from
+     */
     public void setFrom(String from) {
         this.from = from;
     }

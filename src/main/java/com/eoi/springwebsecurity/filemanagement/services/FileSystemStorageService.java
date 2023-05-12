@@ -22,6 +22,7 @@ public interface FileSystemStorageService {
      * Guarda el archivo proporcionado en el almacenamiento.
      *
      * @param file El archivo a guardar.
+     *
      * @throws RuntimeException si se produce un error al guardar el archivo.
      */
     void save(MultipartFile file);
@@ -38,7 +39,9 @@ public interface FileSystemStorageService {
      * Carga el archivo con el nombre de archivo proporcionado desde el almacenamiento.
      *
      * @param filename El nombre del archivo a cargar.
+     *
      * @return Un objeto Resource que representa el archivo cargado.
+     *
      * @throws RuntimeException si el archivo no existe o no se puede leer.
      */
     Resource load(String filename);
@@ -52,28 +55,43 @@ public interface FileSystemStorageService {
      * Carga todos los archivos del almacenamiento.
      *
      * @return Un Stream de objetos Path que representan los archivos cargados.
+     *
      * @throws RuntimeException si se produce un error al cargar los archivos.
      */
     List<FileInfo> loadAll();
 
 
+    /**
+     * Load all from user list.
+     *
+     * @param userId the user id
+     *
+     * @return the list
+     */
     List<FileInfo> loadAllFromUser(Long userId);
 
     /**
      * Load as resource resource.
      *
      * @param filename the filename
+     *
      * @return the resource
      */
     Resource loadAsResource(String filename);
 
 
+    /**
+     * Delete file.
+     *
+     * @param filename the filename
+     */
     void deleteFile(String filename);
 
     /**
      * Load all by file type list.
      *
      * @param fileType the file type
+     *
      * @return the list
      */
     List<FileInfo> loadAllByFileType(String fileType);

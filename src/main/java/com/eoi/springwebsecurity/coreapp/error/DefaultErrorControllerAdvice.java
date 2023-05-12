@@ -16,10 +16,12 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public class DefaultErrorControllerAdvice {
 
     /**
-     * Controlador de excepciones genéricas que redirige a la página de error y muestra un mensaje de error personalizado.
+     * Controlador de excepciones genéricas que redirige a la página de error y muestra un mensaje de error
+     * personalizado.
      *
      * @param throwable excepción que se ha lanzado
      * @param model     modelo que se utiliza para transmitir información a la vista
+     *
      * @return la vista "error"
      */
     @ExceptionHandler(Throwable.class)

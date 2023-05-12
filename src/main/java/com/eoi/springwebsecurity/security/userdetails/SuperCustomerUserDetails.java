@@ -10,6 +10,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 
 
+/**
+ * The type Super customer user details.
+ */
 @Getter
 @Setter
 @NoArgsConstructor
@@ -35,6 +38,9 @@ public class SuperCustomerUserDetails  implements UserDetails {
      * @param password    the password
      * @param name        the name
      * @param authorities the authorities
+     * @param edad        the edad
+     * @param email       the email
+     * @param userID      the user id
      */
     public SuperCustomerUserDetails(String username, String password, String name,
                                     Collection<? extends GrantedAuthority> authorities, Integer edad, String email,

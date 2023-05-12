@@ -38,6 +38,7 @@ public class RegisterController {
      * Show registration form string.
      *
      * @param model the model
+     *
      * @return the string
      */
 // handler method to handle user registration form request
@@ -55,6 +56,7 @@ public class RegisterController {
      * @param userDto the user dto
      * @param result  the result
      * @param model   the model
+     *
      * @return the string
      */
 // handler method to handle user registration form submit request

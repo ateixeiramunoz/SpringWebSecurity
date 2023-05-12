@@ -34,6 +34,7 @@ public class DBFileStorageService {
      * Store file db.
      *
      * @param file the file
+     *
      * @return the file db
      */
     public FileDB store(MultipartFile file)  {
@@ -60,6 +61,8 @@ public class DBFileStorageService {
      * Método que guarda un fichero de un usuario en base de datos
      *
      * @param file the file
+     * @param user the user
+     *
      * @return the file db
      */
     public FileDB storeUserFile(MultipartFile file, User user)  {
@@ -86,6 +89,8 @@ public class DBFileStorageService {
      * Método que guarda un fichero de un usuario en base de datos
      *
      * @param file the file
+     * @param user the user
+     *
      * @return the file db
      */
     public FileDB storeUserFileWithoutData(@Nullable MultipartFile file, User user)  {
@@ -101,11 +106,11 @@ public class DBFileStorageService {
     }
 
 
-
     /**
      * Gets file.
      *
      * @param id the id
+     *
      * @return the file
      */
     public FileDB getFile(String id) {
@@ -144,6 +149,13 @@ public class DBFileStorageService {
         }).collect(Collectors.toList());
     }
 
+    /**
+     * Gets user file infos.
+     *
+     * @param user the user
+     *
+     * @return the user file infos
+     */
     public List<FileInfo> getUserFileInfos(User user) {
 
         return user.getFilesDB().stream().map(file -> {
@@ -170,7 +182,6 @@ public class DBFileStorageService {
     }
 
 
-
     /**
      * Delete file.
      *
@@ -191,12 +202,11 @@ public class DBFileStorageService {
     }
 
 
-
     /**
      * Método que guarda un fichero de un usuario en base de datos
      *
-     * @param file the file
-     *
+     * @param id   the id
+     * @param user the user
      */
     public void desasociarUserFile(String id, User user)  {
 

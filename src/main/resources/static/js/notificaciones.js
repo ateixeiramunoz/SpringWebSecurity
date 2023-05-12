@@ -3,8 +3,6 @@
                 $("#numeronotifbadge").text(data)
          });
 
-
-
     });
 
 
