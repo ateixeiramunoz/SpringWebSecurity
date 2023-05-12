@@ -49,26 +49,27 @@ public class NotificacionAsincrona extends TimerTask {
         privateMessage.setTo(destinatario);
         privateMessage.setText(message);
         // Creo mi notificación en la base de datos para poder controlar el estado de los mensajes
-            Notificacion notificacion = messagingService.crearNotificacion(privateMessage);
+        //Notificacion notificacion = messagingService.crearNotificacion();
         // Cuando ya tenemos el ID de la notificación, lo informamos en nuestro objeto PrivateMessage creado ad-hoc
-        privateMessage.setNotificationID(notificacion.getId());
+        //privateMessage.setNotificationID(notificacion.getId());
 
             // Componemos un nuevo mensaje STOMP con nuestro PrivateMessage
-        simpMessagingTemplate.convertAndSendToUser(
-                privateMessage.getTo(),
-                "/specific",
-                message,
-                createHeaders(privateMessage.getTo(),
-                        String.valueOf(notificacion.getId()))
-        );
-            log.info("Mensaje enviado a: " + privateMessage.getTo());
-            log.info("Notificación creada con ID: " + notificacion.getId());
-        }
+        //simpMessagingTemplate.convertAndSendToUser(
+          //      privateMessage.getTo(),
+           //     "/specific",
+           //     message,
+           //     createHeaders(privateMessage.getTo(),
+            //            String.valueOf(notificacion.getId()))
+       // );
+         //   log.info("Mensaje enviado a: " + privateMessage.getTo());
+         //   log.info("Notificación creada con ID: " + notificacion.getId());
+       // }
 
-        private MessageHeaders createHeaders(String recipient, String notificationID) {
-            SimpMessageHeaderAccessor headerAccessor = SimpMessageHeaderAccessor.create(SimpMessageType.MESSAGE);
-            headerAccessor.addNativeHeader("notificationID", notificationID);
-            return headerAccessor.getMessageHeaders();
+    //    private MessageHeaders createHeaders(String recipient, String notificationID) {
+     //       SimpMessageHeaderAccessor headerAccessor = SimpMessageHeaderAccessor.create(SimpMessageType.MESSAGE);
+     //       headerAccessor.addNativeHeader("notificationID", notificationID);
+      //      return headerAccessor.getMessageHeaders();
+       //
         }
 
 

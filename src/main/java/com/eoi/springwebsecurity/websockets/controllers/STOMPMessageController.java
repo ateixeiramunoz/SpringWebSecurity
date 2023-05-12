@@ -57,7 +57,8 @@ public class STOMPMessageController {
     public void sendToSpecificUser(@Payload PrivateMessage message) {
 
         // Creo mi notificación en la base de datos para poder controlar el estado de los mensajes
-        Notificacion notificacion = messagingService.crearNotificacion(message);
+        Notificacion notificacion = messagingService.crearNotificacion(
+                message.getTo(), message.getFrom(), message.getText());
         // Cuando ya tenemos el ID de la notificación, lo informamos en nuestro objeto PrivateMessage creado ad-hoc
         message.setNotificationID(notificacion.getId());
 
