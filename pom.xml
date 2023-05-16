@@ -119,10 +119,41 @@
             <scope>test</scope>
         </dependency>
 
-    </dependencies>
+		<!-- https://mvnrepository.com/artifact/io.fabric8/docker-maven-plugin -->
+		<dependency>
+			<groupId>io.fabric8</groupId>
+			<artifactId>docker-maven-plugin</artifactId>
+			<version>0.42.1</version>
+		</dependency>
+
+
+	</dependencies>
 
 	<build>
 		<plugins>
+			<plugin>
+				<groupId>io.fabric8</groupId>
+				<artifactId>docker-maven-plugin</artifactId>
+				<version>0.42.1</version>
+				<configuration>
+					<skip>false</skip>
+
+					<images>
+						<image>
+							<name>alejandroteixeira/spring-boot:latest</name>
+							<registry>docker.io</registry>
+						</image>
+					</images>
+				</configuration>
+				<executions>
+					<execution>
+						<id>push</id>
+						<goals>
+							<goal>push</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
@@ -134,7 +165,7 @@
 					</execution>
 				</executions>
 				<configuration>
-					<imageName>alejandroteixeira/spring-boot</imageName>
+					<imageName>alejandroteixeira/spring-boot:latest</imageName>
 					<excludes>
 						<exclude>
 							<groupId>org.projectlombok</groupId>

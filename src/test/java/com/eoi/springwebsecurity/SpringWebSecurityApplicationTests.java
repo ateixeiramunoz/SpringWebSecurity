@@ -16,7 +16,9 @@ class SpringWebSecurityApplicationTests {
      */
     @Test
     void contextLoads() {
+
         Assertions.assertTrue(true);
+
     }
 
 }
