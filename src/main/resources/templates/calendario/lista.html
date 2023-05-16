@@ -19,7 +19,9 @@
                             <span th:text="${calendario.nombre}"></span>
                             <span th:text="${calendario.descripcion}"></span>
                             <div>
-                                <a th:href="@{/calendarios/{id}/editar(id=${calendario.id})}" class="btn btn-primary btn-sm mr-1" role="button">
+                                <a
+                                        th:href="@{/calendarios/{id}/editar(id=${calendario.id}, calendario=${calendario})}"
+                                   class="btn btn-primary btn-sm mr-1" role="button">
                                     <i class="bi bi-pencil"></i> Editar
                                 </a>
                                 <a th:href="@{/calendarios/{id}/eliminar(id=${calendario.id})}" class="btn btn-danger btn-sm" role="button" onclick="return confirm('¿Estás seguro de que quieres eliminar este calendario?')">

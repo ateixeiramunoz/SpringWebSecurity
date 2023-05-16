@@ -25,6 +25,7 @@ public class CustomUserDetails implements UserDetails {
     private String password;
     private String name;
     private Integer edad;
+    private Integer id;
 
     private Collection<? extends GrantedAuthority> authorities;
 
@@ -38,12 +39,13 @@ public class CustomUserDetails implements UserDetails {
      * @param edad        the edad
      */
     public CustomUserDetails(String username, String password, String name,
-                             Collection<? extends GrantedAuthority> authorities, Integer edad) {
+                             Collection<? extends GrantedAuthority> authorities, Integer edad, Integer id) {
         this.username = username;
         this.password = password;
         this.name = name;
         this.authorities = authorities;
         this.edad = edad;
+        this.id = id;
     }
 
     /**

@@ -6,6 +6,7 @@ import com.eoi.springwebsecurity.calendario.repositories.CalendarioRepository;
 import com.eoi.springwebsecurity.calendario.repositories.EventoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -72,6 +73,8 @@ public class CalendarioController {
         return "redirect:/calendarios";
     }
 
+
+
     /**
      * Mostrar formulario editar calendario string.
      *
@@ -81,9 +84,11 @@ public class CalendarioController {
      * @return the string
      */
     @GetMapping("/{id}/editar")
-    public String mostrarFormularioEditarCalendario(@PathVariable Integer id, Model model) {
-        Optional<Calendario> calendario = calendarioRepository.findById(id);
-        model.addAttribute("calendario", calendario.orElseThrow(() -> new NoSuchElementException("Calendario no encontrado")));
+    public String mostrarFormularioEditarCalendario(@PathVariable Integer id, @RequestParam Calendario calendario,
+                                                    Model model) {
+
+        Optional<Calendario> calendarioOK = calendarioRepository.findById(id);
+        model.addAttribute("calendario", calendarioOK.orElseThrow(() -> new NoSuchElementException("Calendario no encontrado")));
         return "calendario/formulario";
     }
 
