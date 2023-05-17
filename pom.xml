@@ -136,12 +136,15 @@
 				<artifactId>docker-maven-plugin</artifactId>
 				<version>0.42.1</version>
 				<configuration>
+					<filter>${*}</filter>
 					<skip>false</skip>
-
+					<skipPush>false</skipPush>
+					<skipBuild>true</skipBuild>
+					<skipPom>false</skipPom>
+					<registry>docker.io</registry>
 					<images>
 						<image>
 							<name>alejandroteixeira/spring-boot:latest</name>
-							<registry>docker.io</registry>
 						</image>
 					</images>
 				</configuration>

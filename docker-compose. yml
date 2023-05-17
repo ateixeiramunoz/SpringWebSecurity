@@ -1,0 +1,28 @@
+version: "3.9"
+
+services:
+
+  database:
+    network_mode: bridge
+    ports:
+      - "127.0.0.1:3308:3306"
+    image: "mysql:latest"
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: security
+
+  web:
+    network_mode: bridge
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://database:3306/security?characterEncoding=UTF-8
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: password
+      SPRING_JPA_HIBERNATE_DDL-AUTO: create-drop
+
+    depends_on:
+      - database
+    image: "alejandroteixeira/spring-boot:latest"
+    ports:
+      - "127.0.0.1:8080:8080"
+    links:
+      - database:database
